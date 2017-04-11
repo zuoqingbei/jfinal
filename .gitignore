@@ -6,4 +6,4 @@
 /build/
 /target
 /target/
-/*.log
+*.log
