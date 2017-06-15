@@ -7,7 +7,10 @@ package com.ulab.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.beetl.core.GroupTemplate;
 import org.beetl.ext.jfinal.BeetlRenderFactory;
+
+import cn.dreampie.quartz.QuartzPlugin;
 
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
@@ -34,7 +37,7 @@ import com.ulab.core.BaseController;
  * @todo   配置文件
  */
 public class UlabCofig extends JFinalConfig {
-
+	
     @Override
     public void configConstant(Constants me) {
     	loadPropertyFile("config.txt");
@@ -46,6 +49,7 @@ public class UlabCofig extends JFinalConfig {
 		//设置根页面路径
 		me.setBaseViewPath("/WEB-INF/pages");
 	    me.setMainRenderFactory(new BeetlRenderFactory());
+	    
     }
 
     @Override
@@ -68,12 +72,18 @@ public class UlabCofig extends JFinalConfig {
 		dp.setInitialSize(5);
 		dp.setMaxActive(5);
 		dp.setMinIdle(3);
+		dp.setValidationQuery("select 1 from dual");
 		me.add(dp);
 		arp = new AutoTableBindPlugin(dp);// 设置数据库方言
 		arp.setDialect(new OracleDialect());
-		arp.setContainerFactory(new CaseInsensitiveContainerFactory(false));// 忽略大小写
+		arp.setContainerFactory(new CaseInsensitiveContainerFactory(true));// 忽略大小写
 		arp.setShowSql(true);
 		me.add(arp);
+		//定时器
+		QuartzPlugin quartzPlugin = new QuartzPlugin();
+		quartzPlugin.setJobs("quartz.properties");
+		me.add(quartzPlugin);
+
 	}
 
     @Override
@@ -84,11 +94,11 @@ public class UlabCofig extends JFinalConfig {
 
     @Override
     public void configHandler(Handlers me) {
-    	me.add(new ContextPathHandler("cxt"));
+    	me.add(new ContextPathHandler("contextPath"));
     }
-
+    //main方法启动 需要放开pom中jetty-server的注释，并改beetl.properties中RESOURCE.root= /src/main/webapp
     public static void main(String[] args) {
     	PathKit.setWebRootPath("src/main/webapp/");
-		JFinal.start("src/main/webapp", 80, "/", 5);
+		JFinal.start("src/main/webapp", 8080, "/hlht", 5);
     }
 }

@@ -5,3 +5,5 @@ oracle.url = jdbc:oracle:thin:@10.138.8.233:1521:DBPRO
 oracle.user = lhjx01
 oracle.password= Haier,1234
 
+
+

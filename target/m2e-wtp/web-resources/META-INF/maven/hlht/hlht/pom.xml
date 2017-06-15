@@ -21,24 +21,24 @@
 			<version>2.6</version>
 		</dependency>
 
-		<dependency>
+	<!-- 	<dependency>
 			<groupId>com.jfinal</groupId>
 			<artifactId>jetty-server</artifactId>
 			<version>8.1.8</version>
 			<scope>provide</scope>
-		</dependency>
+		</dependency> -->
 		<dependency>
-		    <groupId>com.jfinal</groupId>
-		    <artifactId>jfinal-ext</artifactId>
-		    <version>3.1.4</version>
+			<groupId>com.jfinal</groupId>
+			<artifactId>jfinal-ext</artifactId>
+			<version>3.1.4</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.beetl</groupId>
 			<artifactId>beetl-core</artifactId>
 			<version>2.1.4</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
@@ -66,17 +66,17 @@
 			<artifactId>fastjson</artifactId>
 			<version>1.2.28</version>
 		</dependency>
-		
+
 		<dependency>
-		    <groupId>org.apache.httpcomponents</groupId>
-		    <artifactId>httpcore</artifactId>
-		    <version>4.4.1</version>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.4.1</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.apache.httpcomponents</groupId>
-		    <artifactId>httpclient</artifactId>
-		    <version>4.4</version>
-		</dependency> 
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.4</version>
+		</dependency>
 		<!-- 解决与tomcat7冲突 -->
 		<dependency>
 			<groupId>com.ibm.icu</groupId>
@@ -94,25 +94,22 @@
 			<version>10.2.0.4.0</version>
 			<scope>provided</scope>
 		</dependency>
-		
-		
+
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.7.12</version>
 		</dependency>
+		<!--jfinal quartz 定时任务 -->
 		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>dubbo</artifactId>
-			<version>2.5.3</version>
+			<groupId>cn.dreampie</groupId>
+			<artifactId>jfinal-quartz</artifactId>
+			<version>0.2</version>
 		</dependency>
-		
-		
-	<!-- 	<dependency>
-			<groupId>com.jfinal</groupId>
-			<artifactId>DubboDemoApi</artifactId>
-			<version>1.0.0</version>
-		</dependency> -->
+
+		<!-- <dependency> <groupId>com.jfinal</groupId> <artifactId>DubboDemoApi</artifactId> 
+			<version>1.0.0</version> </dependency> -->
 	</dependencies>
 	<build>
 		<finalName>hlht</finalName>

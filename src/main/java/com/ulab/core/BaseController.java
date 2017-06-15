@@ -1,6 +1,7 @@
 
 package com.ulab.core;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
@@ -17,7 +18,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.ActiveRecordException;
@@ -26,7 +27,6 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.Table;
 import com.jfinal.plugin.activerecord.TableMapping;
 import com.jfinal.upload.UploadFile;
-import com.ulab.model.User;
 import com.ulab.util.StringKit;
 import com.ulab.util.TypeConverter;
 
@@ -47,9 +47,6 @@ public class BaseController extends Controller {
 		return parasUrl;
 	}
 
-	public User getLoginUser() {
-		return this.getSessionAttr(Constants.SESSION_USER);
-	}
 
 	public String getRequestUrl() {
 		return getRequest().getRequestURL()
@@ -375,5 +372,15 @@ public class BaseController extends Controller {
 			response.setHeader("Content-Disposition", "attachment; filename=\"" + finalFileName + "\"");
 		} catch (UnsupportedEncodingException e) {
 		}
+	}
+	public static String getWebRootPath(){
+		try {
+			String path = Class .class.getResource("/").toURI().getPath();
+			String url=new File(path).getParentFile().getParentFile().getCanonicalPath();
+			return url;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
