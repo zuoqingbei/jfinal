@@ -1,9 +1,14 @@
 devMode = true
 #数据库环境配置
-oracle.driver=oracle.jdbc.driver.OracleDriver  
-oracle.url = jdbc:oracle:thin:@10.138.8.233:1521:DBPRO
-oracle.user = lhjx01
-oracle.password= Haier,1234
+#oracle.driver=oracle.jdbc.driver.OracleDriver  
+#oracle.url = jdbc:oracle:thin:@10.138.8.233:1521:DBPRO
+#oracle.user = lhjx01
+#oracle.password= Haier,1234
+
+#mysql.url=jdbc:mysql://192.168.232.99:9083/stevenkuang?characterEncoding=UTF-8
+mysql.url=jdbc:mysql://60.212.191.147:9083/stevenkuang?characterEncoding=UTF-8
+mysql.user=root
+mysql.password=abcd.1234
 
 
 

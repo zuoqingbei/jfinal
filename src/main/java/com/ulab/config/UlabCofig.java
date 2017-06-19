@@ -25,7 +25,9 @@ import com.jfinal.ext.interceptor.SessionInViewInterceptor;
 import com.jfinal.ext.plugin.tablebind.AutoTableBindPlugin;
 import com.jfinal.ext.route.AutoBindRoutes;
 import com.jfinal.kit.PathKit;
+import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
+import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
 import com.jfinal.plugin.activerecord.dialect.OracleDialect;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.ulab.core.BaseController;
@@ -64,7 +66,7 @@ public class UlabCofig extends JFinalConfig {
 
 	@Override
 	public void configPlugin(Plugins me) {
-		AutoTableBindPlugin arp = null;
+	/*	AutoTableBindPlugin arp = null;
 		DruidPlugin dp = new DruidPlugin(this.getProperty("oracle.url"),
 				this.getProperty("oracle.user"),
 				this.getProperty("oracle.password"),
@@ -79,6 +81,17 @@ public class UlabCofig extends JFinalConfig {
 		arp.setContainerFactory(new CaseInsensitiveContainerFactory(true));// 忽略大小写
 		arp.setShowSql(true);
 		me.add(arp);
+		*/
+		AutoTableBindPlugin mysqlarp = null;
+		DruidPlugin druidPlugin = new DruidPlugin(this.getProperty("mysql.url"),
+				this.getProperty("mysql.user"),
+				this.getProperty("mysql.password"));
+		me.add(druidPlugin);
+		mysqlarp = new AutoTableBindPlugin(druidPlugin);// 设置数据库方言
+		//ActiveRecordPlugin mysqlarp = new ActiveRecordPlugin(druidPlugin);
+		mysqlarp.setDialect(new MysqlDialect());
+		mysqlarp.setShowSql(true);
+		me.add(mysqlarp);
 		//定时器
 		QuartzPlugin quartzPlugin = new QuartzPlugin();
 		quartzPlugin.setJobs("quartz.properties");

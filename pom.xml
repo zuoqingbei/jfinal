@@ -21,12 +21,17 @@
 			<version>2.6</version>
 		</dependency>
 
-	<!-- 	<dependency>
+		<dependency>
 			<groupId>com.jfinal</groupId>
 			<artifactId>jetty-server</artifactId>
 			<version>8.1.8</version>
 			<scope>provide</scope>
-		</dependency> -->
+		</dependency>
+			<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.38</version>
+		</dependency>
 		<dependency>
 			<groupId>com.jfinal</groupId>
 			<artifactId>jfinal-ext</artifactId>
