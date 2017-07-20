@@ -49,7 +49,7 @@ public class TaxiController extends BaseController {
      * @return_type   void
      */
     @SuppressWarnings("unchecked")
-	public void gridTableDataAjax(){
+/*	public void gridTableDataAjax(){
     	 getResponse().addHeader("Access-Control-Allow-Origin", "*");
     	 String callback =getPara("callback"); 
     	 String lat =getPara("lat"); 
@@ -64,5 +64,19 @@ public class TaxiController extends BaseController {
     	 json.put("data",list);
     	 String jsonp = callback+"("+ JsonKit.toJson(json)+")";//返回的json 格式要加callback()
     	 renderJson(jsonp);
-    }
+    }*/
+	public void gridTableDataAjax(){
+   	 getResponse().addHeader("Access-Control-Allow-Origin", "*");
+   	 String callback =getPara("callback"); 
+   	 String baiduX =getPara("x"); 
+   	 String baiduY =getPara("y");
+   	 int pageNum =getParaToInt("pageNum");
+   	 int pageSize =getParaToInt("pageSize");
+   	 //根据网格确定出租车
+   	 Page<TaxiLocationRealTime> list=TaxiLocationRealTime.dao.taxiLocationIfo(baiduX,baiduY,pageSize,pageNum);
+   	 Map json=new HashMap();
+   	 json.put("data",list);
+   	 String jsonp = callback+"("+ JsonKit.toJson(json)+")";//返回的json 格式要加callback()
+   	 renderJson(jsonp);
+   }
 }
