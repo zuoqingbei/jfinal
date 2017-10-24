@@ -112,6 +112,6 @@ public class UlabCofig extends JFinalConfig {
     //main方法启动 需要放开pom中jetty-server的注释，并改beetl.properties中RESOURCE.root= /src/main/webapp
     public static void main(String[] args) {
     	PathKit.setWebRootPath("src/main/webapp/");
-		JFinal.start("src/main/webapp", 8080, "/hlht", 5);
+		JFinal.start("src/main/webapp", 8080, "/taxi", 5);
     }
 }

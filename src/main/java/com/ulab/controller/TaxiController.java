@@ -12,15 +12,19 @@ import com.ulab.aop.GlobalInterceptor;
 import com.ulab.core.BaseController;
 import com.ulab.model.Dgrid;
 import com.ulab.model.TaxiLocationRealTime;
+import com.ulab.model.TaxiLocationRealTimeBak;
 /**
  * 
  * @time   2017年4月11日 上午10:59:00
  * @author zuoqb
  * @todo   出租车
  */
-@ControllerBind(controllerKey = "/taxi", viewPath = "/taxi")
+@ControllerBind(controllerKey = "/taxi", viewPath = "/test")
 @Before({GlobalInterceptor.class})
 public class TaxiController extends BaseController {
+	public void index(){
+		render("test.html");
+	}
     /**
      * 
      * @time   2017年6月19日 下午2:37:06
@@ -73,7 +77,7 @@ public class TaxiController extends BaseController {
    	 int pageNum =getParaToInt("pageNum");
    	 int pageSize =getParaToInt("pageSize");
    	 //根据网格确定出租车
-   	 Page<TaxiLocationRealTime> list=TaxiLocationRealTime.dao.taxiLocationIfo(baiduX,baiduY,pageSize,pageNum);
+   	 Page<TaxiLocationRealTimeBak> list=TaxiLocationRealTimeBak.dao.taxiLocationIfo(baiduX,baiduY,pageSize,pageNum);
    	 Map json=new HashMap();
    	 json.put("data",list);
    	 String jsonp = callback+"("+ JsonKit.toJson(json)+")";//返回的json 格式要加callback()
