@@ -28,6 +28,7 @@ public class UpdateTaxiGPS implements Runnable {
         	 List<BaiduLocation> location=HttpRequestUtils.readHTmlByHtmlUnitMany(params,url);
         	 List<String> sqls=new ArrayList<String>();
         	 for(BaiduLocation loc:location){
+        		 System.out.println(loc.getLat()+"---"+loc.getLng());
         		 //更新信息
         		 String sql="update dm_taxi_location_realtime_bak set baidu_longitude='"+
         				 loc.getLng()+"',"+

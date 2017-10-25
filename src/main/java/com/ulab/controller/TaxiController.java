@@ -74,8 +74,10 @@ public class TaxiController extends BaseController {
    	 String callback =getPara("callback"); 
    	 String baiduX =getPara("x"); 
    	 String baiduY =getPara("y");
-   	 int pageNum =getParaToInt("pageNum");
-   	 int pageSize =getParaToInt("pageSize");
+   	 String p=getPara("pageNum","1");
+   	 String size=getPara("pageSize","10");
+   	 int pageNum =Integer.parseInt(p);
+   	 int pageSize =Integer.parseInt(size);
    	 //根据网格确定出租车
    	 Page<TaxiLocationRealTimeBak> list=TaxiLocationRealTimeBak.dao.taxiLocationIfo(baiduX,baiduY,pageSize,pageNum);
    	 Map json=new HashMap();
