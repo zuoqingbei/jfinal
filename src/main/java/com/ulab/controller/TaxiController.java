@@ -1,5 +1,6 @@
 package com.ulab.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,12 +8,17 @@ import java.util.Map;
 import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.kit.JsonKit;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.ulab.aop.GlobalInterceptor;
 import com.ulab.core.BaseController;
+import com.ulab.job.TestQuartzJobOne;
+import com.ulab.model.Block;
 import com.ulab.model.Dgrid;
 import com.ulab.model.TaxiLocationRealTime;
 import com.ulab.model.TaxiLocationRealTimeBak;
+import com.ulab.util.UpdateTaxiGPS;
 /**
  * 
  * @time   2017年4月11日 上午10:59:00
@@ -79,10 +85,16 @@ public class TaxiController extends BaseController {
    	 int pageNum =Integer.parseInt(p);
    	 int pageSize =Integer.parseInt(size);
    	 //根据网格确定出租车
-   	 Page<TaxiLocationRealTimeBak> list=TaxiLocationRealTimeBak.dao.taxiLocationIfo(baiduX,baiduY,pageSize,pageNum);
+   	 Page<TaxiLocationRealTime> list=TaxiLocationRealTime.dao.taxiLocationIfo(baiduX,baiduY,pageSize,pageNum);
    	 Map json=new HashMap();
    	 json.put("data",list);
    	 String jsonp = callback+"("+ JsonKit.toJson(json)+")";//返回的json 格式要加callback()
    	 renderJson(jsonp);
    }
+    
+	public void quart(){
+		 TaxiLocationRealTime.quartzLocation();
+		 renderJson("success");
+   }
+
 }

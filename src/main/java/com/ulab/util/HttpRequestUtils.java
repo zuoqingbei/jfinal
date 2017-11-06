@@ -80,8 +80,8 @@ public class HttpRequestUtils {
 		// 关闭css渲染
 		webClient.getOptions().setCssEnabled(false);
 		// js运行时错误，是否抛出异常
-		webClient.getOptions().setThrowExceptionOnScriptError(false);
-		webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
+		webClient.getOptions().setThrowExceptionOnScriptError(true);
+		webClient.getOptions().setThrowExceptionOnFailingStatusCode(true);
 		HtmlPage page;
 		List<BaiduLocation> location=new ArrayList<BaiduLocation>();
 		long start=System.currentTimeMillis();
@@ -89,7 +89,7 @@ public class HttpRequestUtils {
 			// 3.获取页面
 			page = webClient.getPage(url);
 			// 等待js渲染执行 waitime等待时间(ms)
-			webClient.waitForBackgroundJavaScript(3000);
+			webClient.waitForBackgroundJavaScript(2000);
 			// 获取标签hed的内容
 			// HtmlDivision div=(HtmlDivision)page.getElementById("points_box");
 			String result = page.asText();
