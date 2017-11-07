@@ -42,7 +42,7 @@ public class TaxiController extends BaseController {
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	public void taxiLocationIfoAjax(){
     	 getResponse().addHeader("Access-Control-Allow-Origin", "*");
-    	 List<TaxiLocationRealTime> list=TaxiLocationRealTime.dao.taxiLocationIfo();
+    	 List<TaxiLocationRealTimeBak> list=TaxiLocationRealTimeBak.dao.taxiLocationIfo();
     	 Map json=new HashMap();
     	 String callback = getPara("callback"); 
     	 json.put("data",list);
@@ -85,16 +85,35 @@ public class TaxiController extends BaseController {
    	 int pageNum =Integer.parseInt(p);
    	 int pageSize =Integer.parseInt(size);
    	 //根据网格确定出租车
-   	 Page<TaxiLocationRealTime> list=TaxiLocationRealTime.dao.taxiLocationIfo(baiduX,baiduY,pageSize,pageNum);
+   	 Page<TaxiLocationRealTimeBak> list=TaxiLocationRealTimeBak.dao.taxiLocationIfo(baiduX,baiduY,pageSize,pageNum);
    	 Map json=new HashMap();
    	 json.put("data",list);
    	 String jsonp = callback+"("+ JsonKit.toJson(json)+")";//返回的json 格式要加callback()
    	 renderJson(jsonp);
    }
-    
+    /**
+     * 
+     * @time   2017年11月7日 下午1:00:04
+     * @author zuoqb
+     * @todo   使用js api进行坐标转换 GPS-->百度坐标（包含图块坐标转换）
+     * @param  
+     * @return_type   void
+     */
 	public void quart(){
 		 TaxiLocationRealTime.quartzLocation();
 		 renderJson("success");
    }
+	/**
+	 * 
+	 * @time   2017年11月7日 下午12:58:29
+	 * @author zuoqb
+	 * @todo   后台坐标转换：GPS-->百度坐标（无法实现图块坐标转换）
+	 * @param  
+	 * @return_type   void
+	 */
+	public void quartClient(){
+		 TaxiLocationRealTime.quartzLocationClient();
+		 renderJson("success");
+  }
 
 }

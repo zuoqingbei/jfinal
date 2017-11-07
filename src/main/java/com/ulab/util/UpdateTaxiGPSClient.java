@@ -10,31 +10,30 @@ import java.util.List;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.ulab.model.BaiduLocation;
+import com.ulab.model.Block;
 
-public class UpdateTaxiGPS implements Runnable {
-    private String params;
-    private String url;
+public class UpdateTaxiGPSClient implements Runnable {
+	List<Block> list;
     private static SimpleDateFormat dateFormat = new SimpleDateFormat(
             "yyyy-MM-dd HH:mm:ss");
-    public UpdateTaxiGPS(String params,String url){
-    	this.params=params;
-    	this.url=url;
+    public UpdateTaxiGPSClient(List<Block> list){
+    	this.list=list;
     }
     /**
      * 实时输出日志信息
      */
     public void run() {
         try {
-        	 List<BaiduLocation> location=HttpRequestUtils.readHTmlByHtmlUnitMany(params,url);
+        	 List<BaiduLocation> location=AppSendUtils.readHTmlByHtmlUnitMany(list);
         	 List<String> sqls=new ArrayList<String>();
         	 for(BaiduLocation loc:location){
         		// System.out.println(loc.getLat()+"---"+loc.getLng());
         		 //更新信息
-        		 String sql="update dm_taxi_location_realtime_bak set baidu_longitude='"+
+        		 String sql="update dm_taxi_location_realtime set baidu_longitude='"+
         				 loc.getLng()+"',"+
         				 "baidu_latitude='"+loc.getLat()+"',"+
-        				 "baidu_x='"+loc.getX()+"',"+
-        				 "baidu_y='"+loc.getY()+"',"+
+        				/* "baidu_x='"+loc.getX()+"',"+
+        				 "baidu_y='"+loc.getY()+"',"+*/
         				 "transform_status='1',"+
         				 "transform_time='"+dateFormat.format(new Date())+"'"
         				 +" where sim='"+loc.getSim()+"'";
