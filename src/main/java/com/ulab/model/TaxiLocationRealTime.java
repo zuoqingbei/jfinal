@@ -2,6 +2,7 @@
 package com.ulab.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +14,7 @@ import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.ulab.job.TestQuartzJobOne;
+import com.ulab.util.AppSendUtils;
 import com.ulab.util.UpdateTaxiGPS;
 import com.ulab.util.UpdateTaxiGPSClient;
 /**
@@ -44,7 +46,7 @@ public class TaxiLocationRealTime extends Model<TaxiLocationRealTime> {
 		sb.append(" where tin.orgion not in('文登测试专用','文登宏利出租','测试专用')  ");
 		return TaxiLocationRealTime.dao.find(sb.toString());*/
 		StringBuffer sb=new StringBuffer();
-		sb.append(" SELECT tin.carnumber,loc.baidu_longitude,loc.baidu_latitude ");
+		sb.append(" SELECT tin.carnumber,loc.baidu_longitude,loc.baidu_latitude,loc.sim ");
 		sb.append(" from ");
 		sb.append("   dm_taxi_location_realtime loc ");
 		sb.append(" LEFT JOIN taxi_taxiinfo tin ON tin.sim = loc.sim ");
@@ -90,6 +92,31 @@ public class TaxiLocationRealTime extends Model<TaxiLocationRealTime> {
 		}
 		
 		//sb.append(" limit "+(Integer.valueOf(pageNum)-1)*Integer.valueOf(pageSize)+","+pageSize);
+		Page<TaxiLocationRealTime> page = TaxiLocationRealTime.dao.paginate(pageNum,pageSize,select.toString(),sb.toString());  //所有订单  
+		return page;
+	}
+	public Page<TaxiLocationRealTime> taxiLocationIfoNew(String leftLat,String leftLng,String rightLat,String rightLng,int pageSize,int pageNum){
+		StringBuffer sb=new StringBuffer();
+		StringBuffer select=new StringBuffer();
+		select.append(" select distinct tin.carnumber,loc.longitude as lon,tin.orgion,t2.tel,loc.recivetime,loc.sim,loc.latitude as lat,loc.baidu_longitude,loc.baidu_latitude,loc.baidu_x,loc.baidu_y,t2.divername ");
+		sb.append(" from  dm_taxi_location_realtime loc left join  (  select t.* from taxi_transfer_information t inner join (  ");
+		sb.append(" select sim,max(satellitetime) as satellitetime  from taxi_transfer_information where checkstatus=0 group by sim) t1 ");
+		sb.append(" on t.sim=t1.sim and t.satellitetime=t1.satellitetime) p ");
+		sb.append(" left join taxi_driverinfo t2 on p.bankid=t2.bankcard ");
+		sb.append(" on loc.sim=p.sim left join taxi_taxiinfo tin on tin.sim=loc.sim");
+		sb.append(" where tin.orgion not in('文登测试专用','文登宏利出租','测试专用')  ");
+		if(StringUtils.isNotBlank(leftLng)){
+			sb.append(" and  loc.baidu_longitude>='"+leftLng+"' ");
+		}
+		if(StringUtils.isNotBlank(rightLng)){
+			sb.append(" and  loc.baidu_longitude<='"+rightLng+"' ");
+		}
+		if(StringUtils.isNotBlank(leftLat)){
+			sb.append(" and  loc.baidu_latitude>='"+leftLat+"' ");
+		}
+		if(StringUtils.isNotBlank(rightLat)){
+			sb.append(" and  loc.baidu_latitude<='"+rightLat+"' ");
+		}
 		Page<TaxiLocationRealTime> page = TaxiLocationRealTime.dao.paginate(pageNum,pageSize,select.toString(),sb.toString());  //所有订单  
 		return page;
 	}
@@ -141,13 +168,14 @@ public class TaxiLocationRealTime extends Model<TaxiLocationRealTime> {
 	}
 	
 	public static void quartzLocationClient() {
-		String taxisql = "select sim,longitude,latitude from dm_taxi_location_realtime where transform_status='0' ";
+		String taxisql = "select sim,longitude,latitude from dm_taxi_location_realtime where transform_status=0 ";
 		//String taxisql="select sim,longitude,latitude from dm_taxi_location_realtime  ";
 		List<Record> taxi = new ArrayList<Record>();
 		List<Block> list = new ArrayList<Block>();
 		int pageSize = 100, totalPage = 0;
 		try {
 			taxi = Db.find(taxisql);
+			System.out.println("num="+taxi.size());
 			for (Record r : taxi) {
 				Block block = new Block(r.getStr("sim"), r.getStr("longitude"), r.getStr("latitude"));
 				list.add(block);
@@ -176,5 +204,23 @@ public class TaxiLocationRealTime extends Model<TaxiLocationRealTime> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	public static void main(String[] args) {
+		List<Block> currentData = new ArrayList<Block>();
+		Block b=new Block();
+		b.setLat("37.497628");
+		b.setLon("122.116315");
+		b.setSim("13406304004");
+		currentData.add(b);
+		Block b1=new Block();
+		b1.setLat("37.526663");
+		b1.setLon("122.067488");
+		b1.setSim("13406304144");
+		currentData.add(b1);
+		 List<BaiduLocation> location=AppSendUtils.readHTmlByHtmlUnitMany(currentData);
+    	 for(BaiduLocation loc:location){
+    		 System.out.println(loc.getLat()+"---"+loc.getLng()+"---"+loc.getSim());
+    	 }
+		//System.out.println(JsonKit.toJson(currentData));
 	}
 }

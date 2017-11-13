@@ -53,4 +53,30 @@ public class TaxiLocationRealTimeBak extends Model<TaxiLocationRealTimeBak> {
 		Page<TaxiLocationRealTimeBak> page = TaxiLocationRealTimeBak.dao.paginate(pageNum,pageSize,select.toString(),sb.toString());  //所有订单  
 		return page;
 	}
+	
+	public Page<TaxiLocationRealTimeBak> taxiLocationIfoNew(String leftLat,String leftLng,String rightLat,String rightLng,int pageSize,int pageNum){
+		StringBuffer sb=new StringBuffer();
+		StringBuffer select=new StringBuffer();
+		select.append(" select distinct tin.carnumber,loc.longitude as lon,tin.orgion,t2.tel,loc.recivetime,loc.sim,loc.latitude as lat,loc.baidu_longitude,loc.baidu_latitude,loc.baidu_x,loc.baidu_y,t2.divername ");
+		sb.append(" from  dm_taxi_location_realtime_bak loc left join  (  select t.* from taxi_transfer_information t inner join (  ");
+		sb.append(" select sim,max(satellitetime) as satellitetime  from taxi_transfer_information where checkstatus=0 group by sim) t1 ");
+		sb.append(" on t.sim=t1.sim and t.satellitetime=t1.satellitetime) p ");
+		sb.append(" left join taxi_driverinfo t2 on p.bankid=t2.bankcard ");
+		sb.append(" on loc.sim=p.sim left join taxi_taxiinfo tin on tin.sim=loc.sim");
+		sb.append(" where tin.orgion not in('文登测试专用','文登宏利出租','测试专用')  ");
+		if(StringUtils.isNotBlank(leftLng)){
+			sb.append(" and  loc.baidu_longitude>='"+leftLng+"' ");
+		}
+		if(StringUtils.isNotBlank(rightLng)){
+			sb.append(" and  loc.baidu_longitude<='"+rightLng+"' ");
+		}
+		if(StringUtils.isNotBlank(leftLat)){
+			sb.append(" and  loc.baidu_latitude>='"+leftLat+"' ");
+		}
+		if(StringUtils.isNotBlank(rightLat)){
+			sb.append(" and  loc.baidu_latitude<='"+rightLat+"' ");
+		}
+		Page<TaxiLocationRealTimeBak> page = TaxiLocationRealTimeBak.dao.paginate(pageNum,pageSize,select.toString(),sb.toString());  //所有订单  
+		return page;
+	}
 }

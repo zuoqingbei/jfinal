@@ -1,10 +1,10 @@
 package com.ulab.job;
 
-import java.util.Date;
-
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+
+import com.ulab.model.TaxiLocationRealTime;
 /**
  * 
  * @time   2017年5月25日 上午10:41:40
@@ -17,7 +17,8 @@ public class TestQuartzJobTwo implements Job {
 	public void execute(JobExecutionContext context)
 			throws JobExecutionException {
 		// TODO Auto-generated method stub
-		System.out.println("我是第二个定时任务 " + new Date());
+		System.out.println("定时器");
+		TaxiLocationRealTime.quartzLocationClient();
 	}
 
 

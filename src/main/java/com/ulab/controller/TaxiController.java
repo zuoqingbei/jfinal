@@ -42,7 +42,7 @@ public class TaxiController extends BaseController {
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	public void taxiLocationIfoAjax(){
     	 getResponse().addHeader("Access-Control-Allow-Origin", "*");
-    	 List<TaxiLocationRealTimeBak> list=TaxiLocationRealTimeBak.dao.taxiLocationIfo();
+    	 List<TaxiLocationRealTime> list=TaxiLocationRealTime.dao.taxiLocationIfo();
     	 Map json=new HashMap();
     	 String callback = getPara("callback"); 
     	 json.put("data",list);
@@ -58,7 +58,7 @@ public class TaxiController extends BaseController {
      * @param  
      * @return_type   void
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
 /*	public void gridTableDataAjax(){
     	 getResponse().addHeader("Access-Control-Allow-Origin", "*");
     	 String callback =getPara("callback"); 
@@ -85,12 +85,39 @@ public class TaxiController extends BaseController {
    	 int pageNum =Integer.parseInt(p);
    	 int pageSize =Integer.parseInt(size);
    	 //根据网格确定出租车
-   	 Page<TaxiLocationRealTimeBak> list=TaxiLocationRealTimeBak.dao.taxiLocationIfo(baiduX,baiduY,pageSize,pageNum);
+   	 Page<TaxiLocationRealTime> list=TaxiLocationRealTime.dao.taxiLocationIfo(baiduX,baiduY,pageSize,pageNum);
    	 Map json=new HashMap();
    	 json.put("data",list);
    	 String jsonp = callback+"("+ JsonKit.toJson(json)+")";//返回的json 格式要加callback()
    	 renderJson(jsonp);
    }
+    /**
+     * 
+     * @time   2017年11月9日 下午6:29:57
+     * @author zuoqb
+     * @todo   
+     * @param  
+     * @return_type   void
+     */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public void gridTableDataAjaxNew(){
+      	 getResponse().addHeader("Access-Control-Allow-Origin", "*");
+      	 String callback =getPara("callback"); 
+      	 String leftLat =getPara("leftLat"); 
+      	 String leftLng =getPara("leftLng");
+      	 String rightLat =getPara("rightLat"); 
+      	 String rightLng =getPara("rightLng");
+      	 String p=getPara("pageNum","1");
+      	 String size=getPara("pageSize","10");
+      	 int pageNum =Integer.parseInt(p);
+      	 int pageSize =Integer.parseInt(size);
+      	 //根据网格确定出租车
+      	 Page<TaxiLocationRealTime> list=TaxiLocationRealTime.dao.taxiLocationIfoNew(leftLat, leftLng, rightLat, rightLng, pageSize, pageNum);
+      	 Map json=new HashMap();
+      	 json.put("data",list);
+      	 String jsonp = callback+"("+ JsonKit.toJson(json)+")";//返回的json 格式要加callback()
+      	 renderJson(jsonp);
+      }
     /**
      * 
      * @time   2017年11月7日 下午1:00:04
@@ -99,10 +126,10 @@ public class TaxiController extends BaseController {
      * @param  
      * @return_type   void
      */
-	public void quart(){
+/*	public void quart(){
 		 TaxiLocationRealTime.quartzLocation();
 		 renderJson("success");
-   }
+   }*/
 	/**
 	 * 
 	 * @time   2017年11月7日 下午12:58:29

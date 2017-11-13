@@ -23,11 +23,12 @@ public class UpdateTaxiGPSClient implements Runnable {
      * 实时输出日志信息
      */
     public void run() {
+    	System.out.println("start---------------------------------------");
         try {
         	 List<BaiduLocation> location=AppSendUtils.readHTmlByHtmlUnitMany(list);
         	 List<String> sqls=new ArrayList<String>();
         	 for(BaiduLocation loc:location){
-        		// System.out.println(loc.getLat()+"---"+loc.getLng());
+        		 System.out.println(loc.getLat()+"---"+loc.getLng()+"---"+loc.getSim());
         		 //更新信息
         		 String sql="update dm_taxi_location_realtime set baidu_longitude='"+
         				 loc.getLng()+"',"+
@@ -39,6 +40,7 @@ public class UpdateTaxiGPSClient implements Runnable {
         				 +" where sim='"+loc.getSim()+"'";
         		 sqls.add(sql);
         	 }
+        	 System.out.println("---------------------------------------sqls.size()="+sqls.size());
         	 if(sqls.size()>0){
         		 Db.batch(sqls, sqls.size());
         		 System.out.println("批量更新成功!");
