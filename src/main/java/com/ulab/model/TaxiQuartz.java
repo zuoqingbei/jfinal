@@ -12,14 +12,14 @@ import com.jfinal.plugin.activerecord.Model;
  * 出租车定时属性信息
  *
  */
-@TableBind(tableName = "dm_taix_quartz",pkName="id")
+@TableBind(tableName = "dm_taxi_quartz",pkName="id")
 public class TaxiQuartz extends Model<TaxiQuartz> {
 	private static final long serialVersionUID = 4762813779629969917L;
 	public static final TaxiQuartz dao = new TaxiQuartz();
 	
 	public TaxiQuartz taxiQuartzPro(){
 		StringBuffer sb=new StringBuffer();
-		sb.append("  select id, intervals,last_transform_time from dm_taix_quartz ");
+		sb.append("  select id, intervals,last_transform_time from dm_taxi_quartz ");
 		return TaxiQuartz.dao.findFirst(sb.toString());
 	}
 	/**
