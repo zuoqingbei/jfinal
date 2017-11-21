@@ -42,7 +42,9 @@ public class TaxiController extends BaseController {
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	public void taxiLocationIfoAjax(){
     	 getResponse().addHeader("Access-Control-Allow-Origin", "*");
-    	 List<TaxiLocationRealTime> list=TaxiLocationRealTime.dao.taxiLocationIfo();
+    	 String lastUpdate =getPara("lastUpdate"); 
+    	 System.out.println(lastUpdate);
+    	 List<TaxiLocationRealTime> list=TaxiLocationRealTime.dao.taxiLocationIfo(lastUpdate);
     	 Map json=new HashMap();
     	 String callback = getPara("callback"); 
     	 json.put("data",list);

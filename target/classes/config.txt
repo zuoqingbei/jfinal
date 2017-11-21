@@ -5,7 +5,7 @@ devMode = true
 #oracle.user = lhjx01
 #oracle.password= Haier,1234
 
-#发布的时候 数据库用192.168.232.99:9083
+#发布的时候 数据库用192.168.232.99:9083  
 #mysql.url=jdbc:mysql://192.168.232.99:9083/stevenkuang?useUnicode=true&characterEncoding=utf-8
 mysql.url=jdbc:mysql://60.212.191.147:9083/stevenkuang?characterEncoding=UTF-8
 mysql.user=root

@@ -1,6 +1,7 @@
 
 package com.ulab.model;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,7 +36,7 @@ public class TaxiLocationRealTime extends Model<TaxiLocationRealTime> {
 	 * @author zuoqb
 	 * @todo  出租车位置信息
 	 */
-	public List<TaxiLocationRealTime> taxiLocationIfo(){
+	public List<TaxiLocationRealTime> taxiLocationIfo(String lastUpdate){
 		/*StringBuffer sb=new StringBuffer();
 		sb.append(" select distinct tin.carnumber,loc.longitude as lon,tin.orgion,t2.tel,loc.recivetime,loc.sim,loc.latitude as lat,t2.divername,loc.baidu_longitude,loc.baidu_latitude,loc.baidu_x,loc.baidu_y from  dm_taxi_location_realtime loc left join  ( ");
 		sb.append(" select t.* from taxi_transfer_information t inner join (  ");
@@ -51,6 +52,9 @@ public class TaxiLocationRealTime extends Model<TaxiLocationRealTime> {
 		sb.append("   dm_taxi_location_realtime loc ");
 		sb.append(" LEFT JOIN taxi_taxiinfo tin ON tin.sim = loc.sim ");
 		sb.append(" where tin.orgion not in('文登测试专用','文登宏利出租','测试专用')  ");
+		if(lastUpdate!=null&&StringUtils.isNotBlank(lastUpdate)&&!"null".equals(lastUpdate)){
+			sb.append(" and loc.transform_time>='"+lastUpdate+"' ");
+		}
 		return TaxiLocationRealTime.dao.find(sb.toString());
 	}
 	/*public Page<TaxiLocationRealTime> taxiLocationIfo(Dgrid grid,int pageSize,int pageNum){
@@ -168,41 +172,44 @@ public class TaxiLocationRealTime extends Model<TaxiLocationRealTime> {
 	}
 	
 	public static void quartzLocationClient() {
-		String taxisql = "select sim,longitude,latitude from dm_taxi_location_realtime where transform_status=0 ";
-		//String taxisql="select sim,longitude,latitude from dm_taxi_location_realtime  ";
-		List<Record> taxi = new ArrayList<Record>();
-		List<Block> list = new ArrayList<Block>();
-		int pageSize = 100, totalPage = 0;
-		try {
-			taxi = Db.find(taxisql);
-			System.out.println("num="+taxi.size());
-			for (Record r : taxi) {
-				Block block = new Block(r.getStr("sim"), r.getStr("longitude"), r.getStr("latitude"));
-				list.add(block);
-			}
-			//每x个为一组调用api
-			totalPage = list.size() / pageSize;
-			if (list.size() % pageSize > 0) {
-				totalPage++;
-			}
-			for (int page = 0; page < totalPage; page++) {
-				List<Block> currentData = new ArrayList<Block>();
-				if (page == totalPage - 1) {
-					currentData = list.subList(page * pageSize, list.size());
-				} else {
-					currentData = list.subList(page * pageSize, page * pageSize + pageSize);
+		//先校验定时器配置文件属性是否允许坐标转化dm_taix_quartz
+		if(TaxiQuartz.dao.canTransform()){
+			String taxisql = "select sim,longitude,latitude from dm_taxi_location_realtime where transform_status=0 ";
+			//String taxisql="select sim,longitude,latitude from dm_taxi_location_realtime  ";
+			List<Record> taxi = new ArrayList<Record>();
+			List<Block> list = new ArrayList<Block>();
+			int pageSize = 100, totalPage = 0;
+			try {
+				taxi = Db.find(taxisql);
+				//System.out.println("num="+taxi.size());
+				for (Record r : taxi) {
+					Block block = new Block(r.getStr("sim"), r.getStr("longitude"), r.getStr("latitude"));
+					list.add(block);
 				}
-				//通过线程 并发执行  但是由于并发太多 需要主动休眠（效率比顺序执行高）
-
-				Thread rthread = new Thread(new UpdateTaxiGPSClient(currentData));
-				rthread.start();
-				//必须休眠 不然线程太多会报错
-				//Thread.sleep(2000);
+				//每x个为一组调用api
+				totalPage = list.size() / pageSize;
+				if (list.size() % pageSize > 0) {
+					totalPage++;
+				}
+				for (int page = 0; page < totalPage; page++) {
+					List<Block> currentData = new ArrayList<Block>();
+					if (page == totalPage - 1) {
+						currentData = list.subList(page * pageSize, list.size());
+					} else {
+						currentData = list.subList(page * pageSize, page * pageSize + pageSize);
+					}
+					//通过线程 并发执行  但是由于并发太多 需要主动休眠（效率比顺序执行高）
+					
+					Thread rthread = new Thread(new UpdateTaxiGPSClient(currentData));
+					rthread.start();
+					//必须休眠 不然线程太多会报错
+					//Thread.sleep(2000);
+				}
+				//线程休眠5分钟
+				// Thread.sleep(1000*60*10);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			//线程休眠5分钟
-			// Thread.sleep(1000*60*10);
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 	public static void main(String[] args) {

@@ -23,7 +23,7 @@ public class UpdateTaxiGPSClient implements Runnable {
      * 实时输出日志信息
      */
     public void run() {
-    	System.out.println("start---------------------------------------");
+    	//System.out.println("start---------------------------------------");
         try {
         	 List<BaiduLocation> location=AppSendUtils.readHTmlByHtmlUnitMany(list);
         	 List<String> sqls=new ArrayList<String>();
@@ -40,7 +40,7 @@ public class UpdateTaxiGPSClient implements Runnable {
         				 +" where sim='"+loc.getSim()+"'";
         		 sqls.add(sql);
         	 }
-        	 System.out.println("---------------------------------------sqls.size()="+sqls.size());
+        	 //System.out.println("---------------------------------------sqls.size()="+sqls.size());
         	 if(sqls.size()>0){
         		 Db.batch(sqls, sqls.size());
         		 System.out.println("批量更新成功!");
