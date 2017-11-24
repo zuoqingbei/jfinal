@@ -1,9 +1,14 @@
 package com.ulab.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
@@ -42,8 +47,18 @@ public class TaxiController extends BaseController {
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	public void taxiLocationIfoAjax(){
     	 getResponse().addHeader("Access-Control-Allow-Origin", "*");
-    	 String lastUpdate =getPara("lastUpdate"); 
-    	 System.out.println(lastUpdate);
+    	 //数据刷新时间间隔 单位毫秒
+    	 String intervalSecond =getPara("intervalSecond"); 
+    	 SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	 String lastUpdate="";
+    	 if(StringUtils.isNotBlank(intervalSecond)){
+ 			Calendar cal=Calendar.getInstance(); 
+ 			cal.setTime(new Date()); 
+ 			cal.add(Calendar.SECOND, 0-Integer.parseInt(intervalSecond)/1000); 
+ 			Date lastDate=cal.getTime(); 
+ 			lastUpdate=sdf.format(lastDate);
+    	 }
+    	 System.out.println(intervalSecond);
     	 List<TaxiLocationRealTime> list=TaxiLocationRealTime.dao.taxiLocationIfo(lastUpdate);
     	 Map json=new HashMap();
     	 String callback = getPara("callback"); 
