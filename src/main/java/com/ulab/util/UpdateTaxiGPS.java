@@ -30,14 +30,10 @@ public class UpdateTaxiGPS implements Runnable {
         	 for(BaiduLocation loc:location){
         		// System.out.println(loc.getLat()+"---"+loc.getLng());
         		 //更新信息
-        		 String sql="update dm_taxi_location_realtime_bak set baidu_longitude='"+
-        				 loc.getLng()+"',"+
-        				 "baidu_latitude='"+loc.getLat()+"',"+
+        		 String sql="update dm_taxi_location_realtime set "+
         				 "baidu_x='"+loc.getX()+"',"+
-        				 "baidu_y='"+loc.getY()+"',"+
-        				 "transform_status='1',"+
-        				 "transform_time='"+dateFormat.format(new Date())+"'"
-        				 +" where sim='"+loc.getSim()+"'";
+        				 "baidu_y='"+loc.getY()+"'"+
+        				 " where sim='"+loc.getSim()+"'";
         		 sqls.add(sql);
         	 }
         	 if(sqls.size()>0){

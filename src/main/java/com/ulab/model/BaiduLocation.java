@@ -12,6 +12,8 @@ public class BaiduLocation {
 	private String y;//图块坐标y值
 	private String lng;//百度经度坐标
 	private String lat;//百度维度坐标
+	private String px;//像素坐标
+	private String py;//像素坐标
 	public String getSim() {
 		return sim;
 	}
@@ -41,5 +43,17 @@ public class BaiduLocation {
 	}
 	public void setLat(String lat) {
 		this.lat = lat;
+	}
+	public String getPx() {
+		return px;
+	}
+	public void setPx(String px) {
+		this.px = px;
+	}
+	public String getPy() {
+		return py;
+	}
+	public void setPy(String py) {
+		this.py = py;
 	}
 }

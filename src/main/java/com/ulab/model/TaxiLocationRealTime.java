@@ -1,9 +1,7 @@
 
 package com.ulab.model;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -14,7 +12,6 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
-import com.ulab.job.TestQuartzJobOne;
 import com.ulab.util.AppSendUtils;
 import com.ulab.util.UpdateTaxiGPS;
 import com.ulab.util.UpdateTaxiGPSClient;
@@ -28,8 +25,8 @@ import com.ulab.util.UpdateTaxiGPSClient;
 public class TaxiLocationRealTime extends Model<TaxiLocationRealTime> {
 	private static final long serialVersionUID = 4762813779629969917L;
 	public static final TaxiLocationRealTime dao = new TaxiLocationRealTime();
-	public static final String DOMAIN_URL = "http://60.212.191.147:8082/weihai";
-	//public static final String DOMAIN_URL = "http://localhost:8088/weihai";
+	//public static final String DOMAIN_URL = "http://60.212.191.147:8082/weihai";
+	public static final String DOMAIN_URL = "http://localhost:8088/weihai";
 	/**
 	 * 
 	 * @time   2017年6月19日 上午10:55:57
@@ -128,12 +125,12 @@ public class TaxiLocationRealTime extends Model<TaxiLocationRealTime> {
 	 * 
 	 * @time   2017年11月6日 下午8:59:44
 	 * @author zuoqb
-	 * @todo  定时转换坐标代码
+	 * @todo  定时转换坐标代码 js
 	 * @param  
 	 * @return_type   void
 	 */
 	public static void quartzLocation() {
-		String taxisql = "select sim,longitude,latitude from dm_taxi_location_realtime where transform_status='0' ";
+		String taxisql = "select sim,longitude,latitude from dm_taxi_location_realtime  ";
 		//String taxisql="select sim,longitude,latitude from dm_taxi_location_realtime  ";
 		List<Record> taxi = new ArrayList<Record>();
 		List<Block> list = new ArrayList<Block>();
@@ -170,7 +167,6 @@ public class TaxiLocationRealTime extends Model<TaxiLocationRealTime> {
 			e.printStackTrace();
 		}
 	}
-	
 	public static void quartzLocationClient() {
 		//先校验定时器配置文件属性是否允许坐标转化dm_taix_quartz
 		if(TaxiQuartz.dao.canTransform()){
@@ -211,6 +207,38 @@ public class TaxiLocationRealTime extends Model<TaxiLocationRealTime> {
 				e.printStackTrace();
 			}
 		}
+	}
+	/**
+	 * 
+	 * @time   2018年1月5日 下午2:26:59
+	 * @author zuoqb
+	 * @todo   区域覆盖率统计
+	 * @param  @return
+	 * @return_type   List<TaxiLocationRealTime>
+	 */
+	public List<TaxiLocationRealTime> taxiAreaFGInfo(String value){
+		StringBuffer sb=new StringBuffer();
+		sb.append(" SELECT count(1) as nums,count(1)/"+value+"*100 as rate,loc.baidu_x,baidu_y,(loc.baidu_x+0.5)*80 as px,(loc.baidu_y+0.5)*80 as py FROM  ");
+		sb.append(" dm_taxi_location_realtime loc ");
+		sb.append(" LEFT JOIN taxi_taxiinfo tin ON tin.sim = loc.sim ");
+		sb.append(" WHERE  tin.orgion not in('文登测试专用','文登宏利出租','测试专用') and baidu_x is not null group by baidu_x,baidu_y ");
+		return TaxiLocationRealTime.dao.find(sb.toString());
+	}
+	
+	public Page<TaxiLocationRealTime> gridCoveringTables(Dgrid dgrid,int pageSize,int pageNum){
+		StringBuffer sb=new StringBuffer();
+		StringBuffer select=new StringBuffer();
+		select.append("select a.* ");
+		sb.append("from( select distinct tin.carnumber,loc.longitude as lon,tin.orgion,t2.tel,loc.recivetime,loc.sim,loc.latitude as lat,loc.baidu_longitude,loc.baidu_latitude,loc.baidu_x,loc.baidu_y,t2.divername  from  dm_taxi_location_realtime loc left join  (  select t.* from taxi_transfer_information t inner join (  ");
+		sb.append(" select sim,max(satellitetime) as satellitetime  from taxi_transfer_information where checkstatus=0 group by sim) t1 ");
+		sb.append(" on t.sim=t1.sim and t.satellitetime=t1.satellitetime) p ");
+		sb.append(" left join taxi_driverinfo t2 on p.bankid=t2.bankcard ");
+		sb.append(" on loc.sim=p.sim left join taxi_taxiinfo tin on tin.sim=loc.sim");
+		sb.append(" where tin.orgion not in('文登测试专用','文登宏利出租','测试专用')  ");
+		sb.append(" and loc.longitude>='"+dgrid.get("leftlon")+"' and loc.longitude<='"+dgrid.get("rightlon")+"' ");
+		sb.append(" and loc.latitude>='"+dgrid.get("rightlat")+"' and loc.latitude<='"+dgrid.get("leftlat")+"')a");
+		Page<TaxiLocationRealTime> page = TaxiLocationRealTime.dao.paginate(pageNum,pageSize,select.toString(),sb.toString());  //所有订单  
+		return page;
 	}
 	public static void main(String[] args) {
 		List<Block> currentData = new ArrayList<Block>();
