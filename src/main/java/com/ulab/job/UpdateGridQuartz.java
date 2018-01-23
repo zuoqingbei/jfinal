@@ -15,7 +15,7 @@ public class UpdateGridQuartz implements Job {
 
 	public void execute(JobExecutionContext context)
 			throws JobExecutionException {
-		Dgrid.dao.updateGridNums();
+		Dgrid.dao.updateGridNumsClient();
 	}
 
 

@@ -1,10 +1,15 @@
 package com.ulab.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.jfinal.ext.plugin.tablebind.TableBind;
+import com.jfinal.kit.JsonKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
+import com.jfinal.plugin.activerecord.Record;
+import com.ulab.util.UpdateGridNums;
+import com.ulab.util.UpdateTaxiGPS;
 
 /**
  * 
@@ -22,7 +27,7 @@ public class Dgrid extends Model<Dgrid> {
 		Db.update("delete from dm_taxi_grid");
 		//划定范围
 		Grid startGrid = new Grid(121.8f, 36.828427f);
-		Grid endGrid = new Grid(122.69158f, 37.565801f);
+		Grid endGrid = new Grid(122.69158f, 37.595801f);
 		for (float i = startGrid.getLon(); i < endGrid.getLon(); i = i + 0.023625f) {
 			for (float j = endGrid.getLat(); j > startGrid.getLat(); j = j - 0.018f) {
 				Dgrid g=new Dgrid();
@@ -35,7 +40,7 @@ public class Dgrid extends Model<Dgrid> {
 		}
 	}
 	public List<Dgrid> getGridData(String value){
-		String sql="select *,format(nums/"+value+"*100,2) as rate from dm_taxi_grid";
+		String sql="select *,convert(nums/"+value+"*100,decimal(10,2)) as rate from dm_taxi_grid";
 		List<Dgrid> grids=Dgrid.dao.find(sql);
 		/*int x=0;
 		for(Dgrid g:grids){
@@ -56,16 +61,35 @@ public class Dgrid extends Model<Dgrid> {
 		System.out.println(x);*/
 		return grids;
 	}
-	public void updateGridNums(){
+	
+	public void updateGridNumsClient(){
+		int pageSize = 50, totalPage = 0;
 		String sql="select * from dm_taxi_grid";
 		List<Dgrid> grids=Dgrid.dao.find(sql);
-		for(Dgrid g:grids){
-			/*String s="select count(loc.sim) as nums from dm_taxi_location_realtime loc  ";
-			s+=" left join taxi_taxiinfo tin ON tin.sim = loc.sim ";
-			s+=" where tin.orgion not in('文登测试专用','文登宏利出租','测试专用')  ";
-			s+=" and loc.longitude>='"+g.get("leftlon")+"' and loc.longitude<='"+g.get("rightlon")+"' ";
-			s+=" and loc.latitude>='"+g.get("rightlat")+"' and loc.latitude<='"+g.get("leftlat")+"'";*/
-			
+		//每10个为一组调用api
+		totalPage = grids.size() / pageSize;
+		if (grids.size() % pageSize > 0) {
+			totalPage++;
+		}
+		try {
+			for (int page = 0; page < totalPage; page++) {
+				List<Dgrid> currentData = new ArrayList<Dgrid>();
+				if (page == totalPage - 1) {
+					currentData = grids.subList(page * pageSize, grids.size());
+				} else {
+					currentData = grids.subList(page * pageSize, page * pageSize + pageSize);
+				}
+				//通过线程 并发执行  但是由于并发太多 需要主动休眠（效率比顺序执行高）
+
+				Thread rthread = new Thread(new UpdateGridNums(currentData));
+				rthread.start();
+				//必须休眠 不然线程太多会报错
+				//Thread.sleep(2000);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		/*for(Dgrid g:grids){
 			StringBuffer sb=new StringBuffer();
 			sb.append(" select count(a.sim) as nums from( select distinct tin.carnumber,loc.longitude as lon,tin.orgion,t2.tel,loc.recivetime,loc.sim,loc.latitude as lat,loc.baidu_longitude,loc.baidu_latitude,loc.baidu_x,loc.baidu_y,t2.divername  from  dm_taxi_location_realtime loc left join  (  select t.* from taxi_transfer_information t inner join (  ");
 			sb.append(" select sim,max(satellitetime) as satellitetime  from taxi_transfer_information where checkstatus=0 group by sim) t1 ");
@@ -79,7 +103,7 @@ public class Dgrid extends Model<Dgrid> {
 			if(loc!=null&&!loc.get("nums").equals(g.get("nums"))){
 				g.set("nums", loc.get("nums")).update();
 			}
-		}
+		}*/
 	}
 	/**
 	 * 

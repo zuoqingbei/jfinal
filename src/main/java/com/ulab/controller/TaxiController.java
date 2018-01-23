@@ -1,7 +1,6 @@
 package com.ulab.controller;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,17 +12,12 @@ import org.apache.commons.lang3.StringUtils;
 import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
 import com.jfinal.kit.JsonKit;
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.activerecord.Record;
 import com.ulab.aop.GlobalInterceptor;
 import com.ulab.core.BaseController;
-import com.ulab.job.TestQuartzJobOne;
-import com.ulab.model.Block;
 import com.ulab.model.Dgrid;
+import com.ulab.model.GridThreshold;
 import com.ulab.model.TaxiLocationRealTime;
-import com.ulab.model.TaxiLocationRealTimeBak;
-import com.ulab.util.UpdateTaxiGPS;
 
 /**
  * 
@@ -205,7 +199,7 @@ public class TaxiController extends BaseController {
 	 * @return_type   void
 	 */
 	public void updateGridNums(){
-		Dgrid.dao.updateGridNums();
+		Dgrid.dao.updateGridNumsClient();
 		renderNull();
 	}
 	
@@ -220,7 +214,11 @@ public class TaxiController extends BaseController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void getGridData(){
 		getResponse().addHeader("Access-Control-Allow-Origin", "*");
-		String value = getPara("value","80");//计算阈值
+		GridThreshold gridThreshold=GridThreshold.dao.gridThreshold();
+		String value ="80" ;//默认80
+		if(gridThreshold!=null){
+			value=gridThreshold.get("threshold_value").toString();//计算阈值
+		}
 		List<Dgrid> grids=Dgrid.dao.getGridData(value);
 		Map json = new HashMap();
 		String callback = getPara("callback");
