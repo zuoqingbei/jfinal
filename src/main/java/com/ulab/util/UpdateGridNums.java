@@ -3,7 +3,10 @@ package com.ulab.util;
 /**
  * 
  */
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import com.jfinal.plugin.activerecord.Db;
@@ -16,12 +19,17 @@ public class UpdateGridNums implements Runnable {
     	this.grids=list;
     }
     public void run() {
+    	SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+		Calendar cal=Calendar.getInstance();
+		cal.add(Calendar.DATE,-1);
+		Date time=cal.getTime();
+		String now=sdf.format(time);
         try {
         	 List<String> sqls=new ArrayList<String>();
         	 for(Dgrid g:grids){
      			StringBuffer sb=new StringBuffer();
      			sb.append(" select count(a.sim) as nums from( select distinct tin.carnumber,loc.longitude as lon,tin.orgion,t2.tel,loc.recivetime,loc.sim,loc.latitude as lat,loc.baidu_longitude,loc.baidu_latitude,loc.baidu_x,loc.baidu_y,t2.divername  from  dm_taxi_location_realtime loc left join  (  select t.* from taxi_transfer_information t inner join (  ");
-     			sb.append(" select sim,max(satellitetime) as satellitetime  from taxi_transfer_information where checkstatus=0 group by sim) t1 ");
+     			sb.append(" select sim,max(satellitetime) as satellitetime  from taxi_transfer_information where checkstatus=0 and substr(satellitetime,1,8)='"+now+"' group by sim) t1 ");
      			sb.append(" on t.sim=t1.sim and t.satellitetime=t1.satellitetime) p ");
      			sb.append(" left join taxi_driverinfo t2 on p.bankid=t2.bankcard ");
      			sb.append(" on loc.sim=p.sim left join taxi_taxiinfo tin on tin.sim=loc.sim");

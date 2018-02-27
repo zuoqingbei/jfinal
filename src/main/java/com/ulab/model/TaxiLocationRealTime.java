@@ -1,7 +1,10 @@
 
 package com.ulab.model;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -228,9 +231,14 @@ public class TaxiLocationRealTime extends Model<TaxiLocationRealTime> {
 	public Page<TaxiLocationRealTime> gridCoveringTables(Dgrid dgrid,int pageSize,int pageNum){
 		StringBuffer sb=new StringBuffer();
 		StringBuffer select=new StringBuffer();
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+		Calendar cal=Calendar.getInstance();
+		cal.add(Calendar.DATE,-1);
+		Date time=cal.getTime();
+		String now=sdf.format(time);
 		select.append("select a.* ");
 		sb.append("from( select distinct tin.carnumber,loc.longitude as lon,tin.orgion,t2.tel,loc.recivetime,loc.sim,loc.latitude as lat,loc.baidu_longitude,loc.baidu_latitude,loc.baidu_x,loc.baidu_y,t2.divername  from  dm_taxi_location_realtime loc left join  (  select t.* from taxi_transfer_information t inner join (  ");
-		sb.append(" select sim,max(satellitetime) as satellitetime  from taxi_transfer_information where checkstatus=0 group by sim) t1 ");
+		sb.append(" select sim,max(satellitetime) as satellitetime  from taxi_transfer_information where checkstatus=0 and substr(satellitetime,1,8)='"+now+"'  group by sim) t1 ");
 		sb.append(" on t.sim=t1.sim and t.satellitetime=t1.satellitetime) p ");
 		sb.append(" left join taxi_driverinfo t2 on p.bankid=t2.bankcard ");
 		sb.append(" on loc.sim=p.sim left join taxi_taxiinfo tin on tin.sim=loc.sim");
