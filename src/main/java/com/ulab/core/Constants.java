@@ -8,6 +8,4 @@ package com.ulab.core;
  * @todo   常量
  */
 public class Constants {
-	//用户
-	public static final String SESSION_USER="session_user";
 }

@@ -7,7 +7,6 @@ package com.ulab.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.beetl.core.GroupTemplate;
 import org.beetl.ext.jfinal.BeetlRenderFactory;
 
 import cn.dreampie.quartz.QuartzPlugin;
@@ -21,16 +20,15 @@ import com.jfinal.config.Routes;
 import com.jfinal.core.Controller;
 import com.jfinal.core.JFinal;
 import com.jfinal.ext.handler.ContextPathHandler;
+import com.jfinal.ext.handler.UrlSkipHandler;
 import com.jfinal.ext.interceptor.SessionInViewInterceptor;
 import com.jfinal.ext.plugin.tablebind.AutoTableBindPlugin;
 import com.jfinal.ext.route.AutoBindRoutes;
 import com.jfinal.kit.PathKit;
-import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
-import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
-import com.jfinal.plugin.activerecord.dialect.OracleDialect;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.ulab.core.BaseController;
+import com.ulab.hander.WebSocketHandler;
 
 /**
  * 
@@ -82,7 +80,7 @@ public class UlabCofig extends JFinalConfig {
 		arp.setShowSql(true);
 		me.add(arp);
 		*/
-		AutoTableBindPlugin mysqlarp = null;
+		/*AutoTableBindPlugin mysqlarp = null;
 		DruidPlugin druidPlugin = new DruidPlugin(this.getProperty("mysql.url"),
 				this.getProperty("mysql.user"),
 				this.getProperty("mysql.password"));
@@ -95,7 +93,7 @@ public class UlabCofig extends JFinalConfig {
 		//定时器
 		QuartzPlugin quartzPlugin = new QuartzPlugin();
 		quartzPlugin.setJobs("quartz.properties");
-		me.add(quartzPlugin);
+		me.add(quartzPlugin);*/
 
 	}
 
@@ -108,10 +106,12 @@ public class UlabCofig extends JFinalConfig {
     @Override
     public void configHandler(Handlers me) {
     	me.add(new ContextPathHandler("contextPath"));
+    	//配置websocket
+    	me.add(new UrlSkipHandler("^/websocket", false));
     }
     //main方法启动 需要放开pom中jetty-server的注释，并改beetl.properties中RESOURCE.root= /src/main/webapp
     public static void main(String[] args) {
     	PathKit.setWebRootPath("src/main/webapp/");
-		JFinal.start("src/main/webapp", 8080, "/taxi", 5);
+		JFinal.start("src/main/webapp", 8088, "/web", 5);
     }
 }
