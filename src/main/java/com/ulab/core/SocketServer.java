@@ -1,87 +1,76 @@
 package com.ulab.core;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-import javax.websocket.server.ServerEndpoint;
-
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.ServerSocket;
+import java.net.Socket;
 /**
- * 环境
- * 浏览器：firefox，google chrome
- * tomcat7.0.69
- * jdk7.0.79
- * 1 每个浏览器代表一个用户，与服务端建立连接后，实现服务端与浏览器的交互
- * 2 暴露websocket推送接口，其他服务端或者业务类调用该接口，向指定用户进行消息推送
- * @author caihao
- *
+ * @todo   socket服务端
+ * @time   2018年4月14日 下午12:02:17
+ * @author zuoqb
  */
-//URI注解，无需在web.xml中配置。
-@ServerEndpoint("/websocket")
-public class SocketServer{
+public class SocketServer {
+	public static final int PORT = 8013;//监听的端口号     
 
+	public static void main(String[] args) {
+		System.out.println("服务器启动...\n");
+		SocketServer server = new SocketServer();
+		server.init();
+	}
 
-    //浏览器与服务端的回话，浏览器每new一个WebSocket就创建一个session，关闭或刷新浏览器，session关闭
-    private Session session;
-    //代表浏览器
-    private String userid;
-
-    /**
-     * 推送消息接口
-     * 外部可以进行调用
-     * @param sendMsg
-     * @throws IOException
-     */
-    public void sendMsg(String sendMsg) {
-        System.out.println(this.session+";"+this.userid+";"+sendMsg);
-        try {
-			this.session.getBasicRemote().sendText(sendMsg);
-		} catch (IOException e) {
-			e.printStackTrace();
+	public void init() {
+		try {
+			ServerSocket serverSocket = new ServerSocket(PORT);
+			while (true) {
+				// 一旦有堵塞, 则表示服务器与客户端获得了连接    
+				Socket client = serverSocket.accept();
+				// 处理这次连接    
+				new HandlerThread(client);
+			}
+		} catch (Exception e) {
+			System.out.println("服务器异常: " + e.getMessage());
 		}
-    }
+	}
 
-    //设置Map,存放每个用户的连接
-    public static Map<String,SocketServer> webSocketSet = new HashMap<String,SocketServer>();
+	private class HandlerThread implements Runnable {
+		private Socket socket;
 
+		public HandlerThread(Socket client) {
+			socket = client;
+			new Thread(this).start();
+		}
 
+		public void run() {
+			try {
+				// 读取客户端数据    
+				DataInputStream input = new DataInputStream(socket.getInputStream());
+				String clientInputStr = input.readUTF();//这里要注意和客户端输出流的写方法对应,否则会抛 EOFException  
+				// 处理客户端数据    
+				System.out.println("客户端发过来的内容:" + clientInputStr);
 
-    @OnOpen
-    public void onOpen(Session session) throws IOException {
-        this.session = session;
-        //后期换成当前登录人ID  
-       // webSocketSet.put(userid, this);
-        webSocketSet.put(this.session.getId(), this);//存在bug
-        System.out.println(this+"有新连接,session="+session+";userid="+userid);
-    }
+				// 向客户端回复信息    
+				DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+				System.out.print("请输入:\t");
+				// 发送键盘输入的一行    
+				String s = new BufferedReader(new InputStreamReader(System.in)).readLine();
+				out.writeUTF(s);
 
-    @OnClose
-    public void onClose() {
-        webSocketSet.remove(this.userid);
-        System.out.println(this+"；连接关闭");
-    }
-
-    @OnMessage
-    public void onMessage(String info){
-        System.out.println(this+"；来自客户端的消息:" + info);
-        String msg = "服务端接收到了来自客户端的消息："+info;
-      /*  if(info.contains("userid")){
-            this.userid = info.split("userid=")[1];
-            System.out.println(this+",this.session="+this.session+";this.userid="+this.userid);
-            webSocketSet.put(userid, this);
-        }*/
-    }
-
-    @OnError
-    public void onError(Throwable error) {
-        System.out.println(this+"；发生错误");
-        error.printStackTrace();
-    }
-
-
+				out.close();
+				input.close();
+			} catch (Exception e) {
+				System.out.println("服务器 run 异常: " + e.getMessage());
+			} finally {
+				if (socket != null) {
+					try {
+						socket.close();
+					} catch (Exception e) {
+						socket = null;
+						System.out.println("服务端 finally 异常:" + e.getMessage());
+					}
+				}
+			}
+		}
+	}
 }

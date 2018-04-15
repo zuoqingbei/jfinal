@@ -1,0 +1,48 @@
+/*全局变量*/
+:root{
+    /*--themeBlue: #00adef;*/
+    --themeBlue: #32bbfe;
+    --backgroundColor:rgba(79,148,207,.17);
+    --borderColor:rgba(65,152,223,.5);
+    --border:.125rem solid var(--borderColor);
+    --lineWidth: .3rem;
+    --totalTime: 6s;
+    --waitTime: 1s;
+    color: var(--themeBlue);
+
+}
+@font-face{
+    font-family: clockFont;
+    src: url("../asserts/font/DIGITAL-Regular.ttf");
+}
+/*全局设置-----start*/
+@media all {
+    * {
+        font-family: PingFang SC, microsoft yahei, sans-serif;
+        margin: 0;
+        padding: 0;
+        color: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: normal;
+    }
+    h1{
+        font-size: 1.8rem;
+    }
+    a {
+        cursor: pointer;
+    }
+
+    a,
+    a:hover,
+    a:focus,
+    a:visited {
+        text-decoration: none;
+    }
+
+    ul {
+        list-style: none;
+    }
+}
+

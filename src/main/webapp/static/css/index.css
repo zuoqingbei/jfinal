@@ -1,0 +1,686 @@
+body > * {
+    /*outline: 1px dashed #f60;*/
+}
+
+.bg100x100 {
+    background-size: 100% 100%;
+}
+
+.bdAndBg {
+    border: var(--border);
+}
+
+.bg {
+    background-color: var(--backgroundColor);
+}
+
+.blueTitle {
+    text-align: center;
+    line-height: 3rem;
+    padding: .8rem;
+    font-size: 1.625rem;
+}
+
+.absCenter {
+    display: inline-block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.borderBottom:after {
+    content: '';
+    display: block;
+    height: .5rem;
+    background: radial-gradient(rgba(65, 152, 223, .5), rgba(0, 0, 0, 0) 60%);
+}
+
+.borderDecorationBig {
+    background-color: var(--backgroundColor);
+    background-image: url("../img/borderBig_LT.png"), url("../img/borderBig_RT.png"), url("../img/borderBig_RB.png"), url("../img/borderBig_LB.png");
+    background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+    background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+    background-origin: border-box;
+}
+
+.borderDecorationSmall {
+    background-image: url("../img/borderSmall_LT.png"), url("../img/borderSmall_RT.png"), url("../img/borderSmall_RB.png"), url("../img/borderSmall_LB.png");
+    background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+    background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+    background-origin: border-box;
+}
+
+.borderDecorationUav {
+
+}
+
+html, body {
+    /*height: 100%;*/
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background: url("../img/bg_body.jpg") no-repeat;
+    /*background-size: 100% 100%;*/
+    background-size: cover;
+    /*overflow: hidden;*/
+}
+
+/*布局*/
+@media all {
+    .container,
+    [class^=left],
+    [class^=right] {
+        display: flex;
+    }
+
+    .container {
+        height: calc(100% - 5.125rem);
+        padding: 1.25rem 1.5rem;
+    }
+
+    .left {
+        /*flex: 3.85;*/
+        flex: 0 0 79.3%;
+        flex-direction: column;
+    }
+
+    .left-top {
+        flex: 5;
+    }
+
+    .left-top-l {
+        flex: 1.03;
+    }
+
+    .left-top-r {
+        flex: 3;
+    }
+
+    .left-bottom {
+        flex: 4;
+    }
+
+    .right {
+        flex: 0 0 20.7%;
+        flex-direction: column;
+    }
+
+    .right-top {
+        flex: 1;
+    }
+
+    .right-top > .right-top {
+        flex: 3;
+    }
+
+    .right-bottom {
+        flex: 4;
+        flex-direction: column;
+    }
+
+}
+
+body > header {
+    position: relative;
+    margin-top: .6125rem;
+    height: 4.5rem;
+    background-image: url("../img/bg_title.png");
+}
+
+body > header > h1.blueTitle {
+    letter-spacing: .375rem;
+    font-size: 2.125rem;
+}
+
+body > header > .clock {
+    position: absolute;
+    display: inline-block;
+    font-size: 1.5rem;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.left-top-l > .intro {
+}
+
+.left-top-l > .intro > h3 {
+    font-size: 2.125rem;
+}
+
+.left-top-l > .intro > h3:after {
+    position: relative;
+    top: .75rem;
+    background: radial-gradient(rgba(65, 152, 223, .5), rgba(0, 0, 0, 0) 80%);
+}
+
+.left-top-l > .intro > .text {
+    padding: .8rem;
+    font-size: 1.75rem;
+    line-height: 3rem;
+    letter-spacing: .05rem;
+}
+
+.left-top-r > .uavVideo,
+.left-top-r > .uavVideoReplace {
+    position: relative;
+    padding: 0 1.25rem;
+    width: 100%;
+}
+
+.right-top > .allVideo {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.right-top > .allVideo.sub4x3 iframe {
+    transform: scaleX(1.36);
+}
+
+.left-top-r > .uavVideo img,
+.left-top-r > .uavVideo #my-player,
+.left-top-r > .uavVideoReplace video,
+.right-top > .allVideo img,
+.right-top > .allVideo iframe {
+    width: 100%;
+    height: 100%;
+}
+#my-player .vjs-poster{
+    /*background: url("../img/videoTimg.gif") no-repeat!important;*/
+    background-size: cover!important;
+}
+.left-top-r > .uavVideo {
+    display: none;
+}
+
+.left-top-r > .uavVideo.uavVideoReplace {
+
+}
+
+.left-top-r > .uavVideo h3,
+.right-top > .allVideo h3 {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    font-family: 宋体 serif;
+    font-size: 1.8rem;
+    color: #fff;
+}
+
+.left-top-r > .uavVideo h3 {
+    left: 2rem;
+}
+
+/*left-bottom 设备列表部分*/
+@media all {
+    .left-bottom > .resultList {
+        margin-right: 1.25rem;
+        width: 100%;
+    }
+
+    .left-bottom > .resultList > h3 {
+        position: relative;
+        margin-top: 1.25rem;
+        padding: .5625rem .875rem;
+        font-size: 1.25rem;
+        background-size: auto, 0, auto, 0;
+    }
+
+    .left-bottom > .resultList > h3 > .number {
+        left: auto;
+        right: -.5rem;
+    }
+
+    .left-bottom > .resultList > h3 > .number > span {
+        display: inline-block;
+        width: 1rem;
+    }
+
+    .left-bottom > .resultList .ulBox {
+        height: 27.25rem;
+    }
+
+    .left-bottom > .resultList ul {
+        white-space: nowrap;
+        position: relative;
+        height: 100%;
+        transition: all 500ms ease-in-out;
+        font-size: 0;
+    }
+
+    .left-bottom > .resultList li.item {
+        display: inline-block;
+        /*margin-right: 1rem;*/
+        padding: .75rem 1.125rem 0;
+        width: 22.875rem;
+        height: 25.25rem;
+        border: var(--border);
+        transition: all 500ms ease-in-out;
+        /*background-image: url("../img/border_resultList.png");*/
+    }
+
+    .left-bottom > .resultList li.item.currentL3 {
+        transform: translate(-280%, -50%) scale(0.3);
+        opacity: 0;
+    }
+
+    .left-bottom > .resultList li.item.currentL2 {
+        transform: translate(-223%, -50%) scale(0.54);
+        opacity: .32;
+    }
+
+    .left-bottom > .resultList li.item.currentL1 {
+        transform: translate(-148%, -50%) scale(0.78);
+        opacity: .6;
+    }
+
+    .left-bottom > .resultList li.item.current {
+        border: .3rem solid var(--themeBlue);
+        animation: snap 600ms;
+    }
+
+    @keyframes snap {
+        from {
+            box-shadow: 0 0 .5rem .5rem;
+            filter: brightness(500%);
+        }
+        to {
+            box-shadow: 0 0 0 0;
+            filter: brightness(100%);
+        }
+    }
+    .left-bottom > .resultList li.item.currentR1 {
+        transform: translate(48%, -50%) scale(0.78);
+        opacity: .6;
+    }
+
+    .left-bottom > .resultList li.item.currentR2 {
+        transform: translate(122%, -50%) scale(0.54);
+        opacity: .32;
+    }
+
+    .left-bottom > .resultList li.item.currentR3 {
+        transform: translate(196%, -50%) scale(0.3);
+        opacity: 0;
+    }
+
+    .left-bottom > .resultList li.item > img {
+        width: 100%;
+        height: 12rem;
+    }
+
+    .left-bottom > .resultList li.item > p {
+        line-height: 2rem;;
+        font-size: 1.1875rem;
+    }
+}
+
+/*right-bottom 无人机控制部分*/
+@media all {
+    .right-bottom > .control {
+        margin-top: 1.5rem;
+        padding: 0 1.25rem;
+        overflow: hidden;
+    }
+
+    .right-bottom > .control > .deviceList h4 {
+        margin-bottom: 2.6875rem;
+        padding: 0;
+    }
+
+    .right-bottom > .control > .deviceList ul {
+        font-size: 0;
+    }
+
+    .right-bottom > .control > .deviceList li {
+        display: inline-block;
+        position: relative;
+        width: 6.25rem;
+        height: 6.25rem;
+        font-size: 1rem;
+        text-align: center;
+        filter: grayscale(100%);
+        cursor: pointer;
+    }
+
+    .right-bottom > .control > .deviceList li.active {
+        filter: grayscale(0);
+        background-image: url("../img/borderUav_LT.png"), url("../img/borderUav_RT.png"), url("../img/borderUav_RB.png"), url("../img/borderUav_LB.png");
+        background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+        background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+    }
+
+    .right-bottom > .control > .deviceList li:after {
+        content: '';
+        display: block;
+        height: 86%;
+        width: 86%;
+        background: var(--backgroundColor);
+        z-index: -1;
+        position: absolute;
+        top: 7%;
+        left: 7%;
+    }
+
+    .right-bottom > .control > .deviceList li.active:after {
+        box-shadow: -0.125rem 0.125rem 0.5rem rgba(0, 0, 0, .6);
+    }
+
+    .right-bottom > .control > .deviceList li + li {
+        margin-left: 1rem;
+    }
+
+    .right-bottom > .control > .deviceList li > .i-battery {
+        position: absolute;
+        top: calc(.25rem + 6%);
+        right: calc(.375rem + 6%);
+        width: 1rem;
+        height: .625rem;
+        border: .125rem solid;
+        /*background: url(../img/i_battery.png) no-repeat;*/
+        /*background-size: contain;*/
+    }
+
+    .right-bottom > .control > .deviceList li > .i-battery.warning {
+        border-color: orangered;
+    }
+
+    .right-bottom > .control > .deviceList li > .i-battery:after {
+        content: "";
+        box-sizing: content-box;
+        display: block;
+        position: absolute;
+        top: 50%;
+        right: -.25rem;
+        transform: translateY(-50%);
+        border: .125rem solid;
+    }
+
+    .right-bottom > .control > .deviceList li > .i-battery.warning:after {
+        border-color: orangered;
+    }
+
+    .right-bottom > .control > .deviceList li > .i-battery > .fill {
+        height: 100%;
+        width: 70%;
+        background: var(--themeBlue);
+        transition: width 300ms;
+    }
+
+    .right-bottom > .control > .deviceList li > .i-battery.warning .fill {
+        background: orangered;
+    }
+
+    .right-bottom > .control > .deviceList li > .i-uav {
+        top: 33%;
+        width: 1.75rem;
+        height: 1.75rem;
+        background: url("../img/i_uav.png") no-repeat;
+        background-size: contain;
+    }
+
+    .right-bottom > .control > .deviceList li.uavRotate > .i-uav {
+        animation: uavRotate 1s infinite linear;
+    }
+
+    @keyframes uavRotate {
+        from {
+            transform: rotate(0deg);
+            top: 19%;
+            left: 36%;
+        }
+        to {
+            transform: rotate(360deg);
+            top: 19%;
+            left: 36%;
+        }
+    }
+    .right-bottom > .control > .deviceList li > .uavName {
+        margin-top: 4rem;
+    }
+
+    .right-bottom > .control > .status h4 {
+        margin-bottom: 3.25rem;
+        margin-top: 2.75rem;
+    }
+
+    .right-bottom > .control > .status li {
+        margin-top: 3.25rem;
+        margin-bottom: 3.5rem;
+    }
+
+    .right-bottom > .control > .status li > * {
+        display: inline-block;
+    }
+
+    .right-bottom > .control > .status li > .text {
+        font-size: 1.3125rem;
+        width: 38%;
+    }
+
+    .right-bottom > .control > .status li > .text > .unit {
+        font-size: 1rem;
+    }
+
+    .right-bottom > .control > .status li > .progressbar {
+        width: calc(13.3125rem - 4%);
+        height: .875rem;
+        background: var(--backgroundColor);
+        border-radius: .375rem;
+
+    }
+
+    .right-bottom > .control > .status li > .progressbar > .fill {
+        position: relative;
+        width: 0;
+        max-width: 100%;
+        height: 100%;
+        background: #3bf;
+        border-radius: .375rem 0 0 .375rem;
+        transition: width 300ms;
+    }
+    .right-bottom > .control > .status li > .progressbar > .fill.value:after {
+        content: '';
+        display: inline-block;
+        position: absolute;
+        top: 50%;
+        right: -.125rem;
+        width: .5rem;
+        height: 250%;
+        transform: translateY(-50%);
+        background: radial-gradient(ellipse at center, rgba(51, 187, 255, 0.5) 0%, rgba(51, 187, 255, 0) 75%);
+        transition: background 500ms;
+    }
+
+
+    .right-bottom > .control > .start {
+        position: relative;
+        margin-bottom: 2.25rem;
+    }
+
+    .right-bottom > .control .start > .btn {
+        margin: 0 auto;
+        width: 13.5rem;
+        height: 13.5rem;
+        background-image: url("../img/start.png");
+        transform: rotate(180deg);
+    }
+
+    .right-bottom > .control .start > .btn > .circle {
+        position: relative;
+        z-index: -1;
+        /*background: red;*/
+    }
+
+    .right-bottom > .control .start > .btn.working > .circle {
+        border-radius: 50%;
+        display: inline-block;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 0;
+        height: 0;
+        transform: translate(-50%, -50%);
+        border-style: solid;
+        /*background-color: var(--themeBlue);*/
+    }
+
+    .right-bottom > .control .start > .text {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        padding: 2rem;
+        transform: translate(-50%, -50%);
+        font-size: 2.5rem;
+        letter-spacing: .25rem;
+        line-height: 2.75rem;
+        cursor: pointer;
+    }
+
+    .deviceList {
+        padding-top: 1.25rem;
+        height: 100%;
+    }
+
+    /*animation: name duration timing-function delay iteration-count direction;*/
+    .right-bottom > .control > .start .btn.working {
+        animation: startBtnRotate 4s linear infinite;
+    }
+
+    .right-bottom > .control > .start .btn.working .circle:nth-child(1) {
+        animation: startBtnCircle 2s linear 0s infinite;
+    }
+
+    .right-bottom > .control > .start .btn.working .circle:nth-child(2) {
+        animation: startBtnCircle 2s linear 600ms infinite;
+    }
+
+    .right-bottom > .control > .start .btn.working .circle:nth-child(3) {
+        animation: startBtnCircle 2s linear 1.2s infinite;
+    }
+
+    @keyframes startBtnRotate {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes startBtnCircle {
+        from {
+            border-width: 0;
+            width: 12rem;
+            height: 12rem;
+            opacity: 0;
+        }
+        30% {
+            border-width: 1rem;
+            opacity: .3;
+        }
+        to {
+            border-width: 2rem;
+            width: 19rem;
+            height: 19rem;
+            opacity: 0;
+        }
+    }
+
+    .control .description {
+        text-align: center;
+        font-size: 1.25rem;
+        margin-bottom: .875rem;
+    }
+
+}
+
+@media screen and (max-width: 960px) and (min-width: 960px) {
+    body {
+        overflow: hidden;
+    }
+
+    html {
+        transform: scaleY(.96) translateY(-2.08%);
+        overflow: hidden;
+        /*margin-bottom: -20px;*/
+    }
+}
+
+/*1920x1080*/
+@media screen and (width: 1920px)and (height: 1080px) {
+    body{
+        overflow: hidden;
+    }
+    body > header {
+        height: 4.25rem;
+    }
+
+    body > header > h1.blueTitle {
+        padding: .5rem;
+    }
+    .container {
+        padding: 1rem 1.5rem;
+    }
+    .left-top {
+        flex: 4;
+    }
+
+    .left-top-l > .intro > .text {
+        line-height: 2.625rem;
+    }
+
+    .left-top-r > .uavVideo img,
+    .left-top-r > .uavVideoReplace video,
+    .right-top > .allVideo img, .right-top > .allVideo iframe {
+        transform: scaleX(1.1050);
+    }
+    .left-bottom > .resultList > h3 {
+        margin-top: 1rem;
+    }
+    .left-bottom > .resultList .ulBox {
+        height: 24.25rem;
+    }
+
+    .left-bottom > .resultList li.item {
+        height: 22.25rem;
+    }
+
+    .left-bottom > .resultList li.item > img {
+        height: 10rem;
+        margin-bottom: .375rem;
+    }
+    .left-bottom > .resultList li.item > p {
+        line-height: 1.75rem;
+    }
+    .right-bottom > .control > .deviceList h4 {
+        margin-bottom: 1.875rem;
+    }
+
+    .right-bottom > .control > .status h4 {
+        margin-bottom: 2rem;
+        margin-top: 1.75rem;
+    }
+
+    .right-bottom > .control > .status li {
+        margin-bottom: 2rem;
+        margin-top: 0;
+    }
+
+    .right-bottom > .control > .start {
+        margin-bottom: 1.5rem;
+    }
+}
+
+
+
+body {
+    transform: scaleY(.98) translateY(-1%);
+    /*overflow: hidden;*/
+    /*margin-bottom: -20px;*/
+}

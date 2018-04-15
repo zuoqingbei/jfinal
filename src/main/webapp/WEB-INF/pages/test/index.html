@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>无人机盘库</title>
+    <link rel="stylesheet" href="${contextPath!}/static/asserts/css/reset.css">
+    <link rel="stylesheet" href="${contextPath!}/static/asserts/css/video-js.min.css">
+    <link rel="stylesheet" href="${contextPath!}/static/css/style.css">
+    <link rel="stylesheet" href="${contextPath!}/static/css/index.css">
+    <style>
+    </style>
+</head>
+<body>
+<header class="bg100x100">
+    <h1 class="blueTitle">日日顺物流-无人机智能盘库系统</h1>
+    <span class="clock"><span class="date"></span> <span class="time"></span></span>
+</header>
+<div class="container">
+    <div class="left">
+        <div class="left-top">
+            <div class="left-top-l">
+                <div class="intro bdAndBg borderDecorationBig">
+                    <h3 class="blueTitle borderBottom">无人机智能盘点系统</h3>
+                    <div class="text">
+                        无人机盘点替代人工实现高效自动盘点操作，开启全球首个无人机盘点新时代。无人机盘点项目由日日顺物流创客训练营参营高校安徽大学提出创意课题，日顺互联网技术中心研发落地，已获得国家知识产权局的专利申请<br>(专利号:201711044720.8)
+                    </div>
+                </div>
+            </div>
+            <div class="left-top-r">
+                <div class="uavVideo">
+                    <h3>实时画面</h3>
+                    <video id="my-player" class="video-js" controls autoplay preload="auto" poster="${contextPath!}/static/img/videoTimg.gif" data-setup='{}'>
+                        <source src='rtmp://172.168.1.102/live/test' type='rtmp/flv'/>
+                    </video>
+                </div>
+                <div class="uavVideoReplace">
+                    <video loop src="${contextPath!}/static/video/Wildlife.mp4"></video>
+                </div>
+            </div>
+        </div>
+        <div class="left-bottom">
+            <div class="resultList">
+                <h3 class="bdAndBg borderDecorationBig">盘点数据<span class="number absCenter">数量: <span>0</span> </span></h3>
+                <div class="ulBox">
+                    <ul>
+                        <li class="item bdAndBg currentL3 absCenter "></li>
+                        <li class="item bdAndBg currentL2 absCenter borderDecorationSmall"></li>
+                        <li class="item bdAndBg currentL1 absCenter borderDecorationBig"></li>
+                        <li class="item bdAndBg current absCenter borderDecorationBig"></li>
+                        <li class="item bdAndBg currentR1 absCenter borderDecorationBig"></li>
+                        <li class="item bdAndBg currentR2 absCenter borderDecorationSmall"></li>
+                        <li class="item bdAndBg currentR3 absCenter"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right">
+        <div class="right-top">
+            <div class="allVideo sub4x3">
+                <h3>全景画面</h3>
+                <img src="${contextPath!}/static/img/video_all.png" alt="">
+
+                <!--<iframe src="http://127.0.0.1:10800/play.html?channel=1"></iframe>-->
+                <!--<iframe src="http://192.168.1.102:10800/play.html?channel=1"></iframe>-->
+            </div>
+        </div>
+        <div class="right-bottom">
+            <div class="control bdAndBg borderDecorationBig">
+                <div class="deviceList">
+                    <h4 class="blueTitle borderBottom">选择无人机</h4>
+                    <ul>
+                        <li class="active">
+                            <div class="i-battery"><div class="fill"></div></div>
+                            <div class="i-uav absCenter"></div>
+                            <div class="uavName">GDU-O2</div>
+                        </li>
+                        <li>
+                            <div class="i-battery"><div class="fill"></div></div>
+                            <div class="i-uav absCenter"></div>
+                            <div class="uavName">GDU-O2</div>
+                        </li>
+                        <li>
+                            <div class="i-battery"><div class="fill"></div></div>
+                            <div class="i-uav absCenter"></div>
+                            <div class="uavName">GDU-O2</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="status">
+                    <h4 class="blueTitle borderBottom">无人机飞行状态</h4>
+                    <ul>
+                        <li id="speedBox" data-now="0.2" data-min="0" data-max="1">
+                            <div class="text"> 速度 <span class="number">0</span> <span class="unit">m/s</span></div>
+                            <div class="progressbar">
+                                <div class="fill"></div>
+                            </div>
+                        </li>
+                        <li id="heightBox" data-now="0.2" data-min="0" data-max="1">
+                            <div class="text"> 高度 <span class="number">0</span> <span class="unit">m</span></div>
+                            <div class="progressbar">
+                                <div class="fill"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="start">
+                    <div class="btn bg100x100">
+                        <span class="circle"></span>
+                        <span class="circle"></span>
+                        <span class="circle"></span>
+                    </div>
+                    <span class="text">开始<br>盘点</span>
+                </div>
+                <div class="description">
+                    <p>1169互联网技术研发中心研发</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div hidden>
+        <audio src="${contextPath!}/static/sound/shutter.wav"></audio>
+    </div>
+</div>
+<script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
+<script src="${contextPath!}/static/asserts/js/video.min.js"></script>
+
+<script src="${contextPath!}/static/js/main.js"></script>
+<script>
+	var imageMap=new Map();
+	var scanInterval; 
+    $(function () {
+        //窗口大小调整
+        windowResize();
+        window.onresize = function () {
+            windowResize();
+        };
+    });
+    //启动
+    function startFly(){
+    	imageMap=new Map();
+    	send("takeoff");
+    	//定时扫描
+    	scanInterval=setInterval(scanImage,1000)
+    }
+    //停止
+    function stopFly(){
+    	clearInterval(scanInterval);
+    	send("land");
+    }
+    //扫描图片
+    function scanImage(){
+    	//send("getflystatus");
+    	$.post("${contextPath}/test/scanImage",{},function(data){
+    		console.log(data.path)
+    		if(data.path!=null&&data.path!=""){
+    			var pre=imageMap.get(data.key);
+    			if(pre==null||pre==""||pre=="undefined"){
+    				imageMap.put(data.key,data);
+		    		scanning(data);
+    			}
+    		}
+    	});
+    }
+    var websocket = null;
+    // 判断当前浏览器是否支持WebSocket
+    if ('WebSocket' in window) {
+        websocket = new WebSocket("ws://"+location.hostname+":"+location.port+"/jfinal/websocket");
+    }
+    else {
+        alert('当前浏览器 Not support websocket')
+    }
+
+    //连接发生错误的回调方法
+    websocket.onerror = function () {
+        setMessageInnerHTML("WebSocket连接发生错误");
+    };
+
+    //连接成功建立的回调方法
+    websocket.onopen = function () {
+        setMessageInnerHTML("WebSocket连接成功");
+    }
+
+    //接收到消息的回调方法
+    websocket.onmessage = function (event) {
+    	alert("接收消息"+event.data)
+        setMessageInnerHTML(event.data);
+    }
+
+    //连接关闭的回调方法
+    websocket.onclose = function () {
+        setMessageInnerHTML("WebSocket连接关闭");
+    }
+
+    //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+    window.onbeforeunload = function () {
+        closeWebSocket();
+    }
+
+    //将消息显示在网页上
+    function setMessageInnerHTML(innerHTML) {
+       // document.getElementById('message').innerHTML += innerHTML + '<br/>';
+       console.log(innerHTML);
+    }
+
+    //关闭WebSocket连接
+    function closeWebSocket() {
+        websocket.close();
+    }
+
+    //发送消息
+    function send(order) {
+        console.log("发送消息："+order);
+        websocket.send(order);
+    }
+    function Map(){
+   	   this.map    =  new Object();
+   	   this.length = 0;
+   	   
+   	   this.size = function(){
+   	       return this.length;
+   	   }
+   	   
+   	   this.put = function(key, value){
+   	      
+   	      if( !this.map['_' + key])
+   	        {
+   	             ++this.length;
+   	        }
+   	      
+   	      this.map['_' + key] = value;
+   	     
+   	   }
+   	   
+   	   this.remove = function(key){
+   	       
+   	       if(this.map['_' + key])
+   	      {
+   	          
+   	          --this.length;
+   	        return delete this.map['_' + key];
+   	      }
+   	      else
+   	      {
+   	          return false;
+   	      }
+   	   }
+   	   
+   	   this.containsKey = function(key){
+   	    
+   	     return this.map['_' + key] ? true:false;
+   	   
+   	   }
+   	    
+   	   this.get = function(key){    
+   	  
+   	      return this.map['_' + key] ? this.map['_' + key]:null;
+   	  
+   	   }
+
+
+   	 this.inspect=function(){    
+   	     var str = '';
+   	     
+   	     for(var each in this.map)
+   	     {
+   	          str+= '/n'+ each + '  Value:'+ this.map[each];
+   	     }
+   	     
+   	     return str;
+   	   }
+   	     
+   	} 
+</script>
+
+</body>
+</html>
