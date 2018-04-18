@@ -12,7 +12,7 @@ mysql.user=root
 mysql.password=abcd.1234
 
 #Socket域名与地址
-socket.domain=127.0.0.1
+socket.domain=192.168.6.100
 socket.port=8011
 
 #条码读取路径

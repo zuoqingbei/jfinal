@@ -118,8 +118,8 @@ public class WebSocketServer {
         			if (result.contains("|")) break;
         		}
         		sendAll(result);
-        		/*Random r=new Random();
-        		sendAll("100|"+r.nextInt()+"|56|88|12|0|0|0|0|0");*/
+        		/*Random r=new Random(100);
+        		sendAll(r.nextInt()+"|"+r.nextInt()+"|56|"+r.nextInt()+"|12|0|0|0|0|0");*/
         		//client.close();
         	} catch (Exception e) {
         		e.printStackTrace();
@@ -176,13 +176,18 @@ public class WebSocketServer {
 	public static void sendAll(String msg) {
 		Map<String, WebSocketServer> webSocketSet = WebSocketServer.webSocketSet;
 		//遍历用户，依据用户的id向用户发送指定的内容
-		for (Map.Entry<String, WebSocketServer> entry : webSocketSet.entrySet()) {
-			String key = entry.getKey();
-			WebSocketServer socketServer = webSocketSet.get(key);
-			String sendMsg = "向页面发送消息   " + msg;
-			System.out.println(sendMsg);
-			//发送全部
-			socketServer.sendMsg(msg);
+		try {
+			for (Map.Entry<String, WebSocketServer> entry : webSocketSet.entrySet()) {
+				String key = entry.getKey();
+				WebSocketServer socketServer = webSocketSet.get(key);
+				String sendMsg = "向页面发送消息   " + msg;
+				System.out.println(sendMsg);
+				//发送全部
+				socketServer.sendMsg(msg);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
 		}
 	}
 }
