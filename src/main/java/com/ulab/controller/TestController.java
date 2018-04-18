@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.jfinal.aop.Before;
 import com.jfinal.ext.route.ControllerBind;
+import com.jfinal.kit.PropKit;
 import com.ulab.aop.GlobalInterceptor;
 import com.ulab.core.BaseController;
 import com.ulab.core.Constants;
@@ -63,7 +64,7 @@ public class TestController extends BaseController {
 		}
 		String path = dir + fileName;
 		String json = JsonUtils.readJson(path);*/
-		map=FileUtil.translateImageFile(Constants.CREATE_FILE_PATH,Constants.CREATE_FILE_PATH, true);
+		map=FileUtil.translateImageFile(PropKit.get("scan_image_path"),PropKit.get("tem_path"), true);
 		ImageInfo info=new ImageInfo(map);
 		renderJson(info);
 	}

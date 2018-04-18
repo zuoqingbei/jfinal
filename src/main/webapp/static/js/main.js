@@ -73,11 +73,10 @@ function uavStart() {
         var confirm = window.confirm("请确认无人机周围环境，是否能安全起飞？");
         if (confirm === true) {
         	startFly();
-        	
             $(".start>.text").html("正在<br>盘点").siblings(".btn").addClass("working");
-            $(".start").unbind().click(function () {
+           /* $(".start>.text").unbind().click(function () {
             	uavStop();
-            });
+            });*/
             startBtnStatus = false;
             $(".deviceList").find("li.active").addClass("uavRotate");
             $uavVideoReplace[0].pause();//视频切换到实时图像
@@ -116,11 +115,10 @@ function uavStart() {
 
 //停止
 function uavStop() {
-	stopFly();
     $(".start>.text").html("开始<br>盘点").siblings(".btn").removeClass("working");
-    $(".start").unbind().click(function () {
+   /* $(".start>.text").unbind().click(function () {
     	uavStart();
-    });
+    });*/
     startBtnStatus = true;
     $(".deviceList").find("li.active").removeClass("uavRotate");
     $uavVideoReplace.parent().show().siblings().hide();
@@ -206,6 +204,12 @@ function chooseUav() {
 
 //无人机实时状态
 function uavStatus(battery, speed, height) {
+	if(parseFloat(height)<0){
+		height=0;
+	};
+	if(parseFloat(speed)<0){
+		speed=0;
+	};
     if (speed) {
         $speedBox.find(".fill").addClass("value")
     } else {
@@ -220,7 +224,7 @@ function uavStatus(battery, speed, height) {
     }
     $heightBox.find(".number").text(height).end().find(".progressbar>.fill").css("width", height / (uavHeightMax - uavHeightMin) * 100 + "%");
     $deviceList.find("li.active .fill").css("width", function () {
-        return battery ? battery * 100 + "%" : null
+        return battery ? battery  + "%" : null
     });
 }
 

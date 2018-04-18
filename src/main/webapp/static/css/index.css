@@ -135,16 +135,20 @@ body > header > h1.blueTitle {
     font-size: 2.125rem;
 }
 
-body > header > .clock {
+body > header > .clock,
+body > header > .text1169 {
     position: absolute;
     display: inline-block;
     font-size: 1.5rem;
-    right: 2rem;
+    left: 2rem;
     top: 50%;
     transform: translateY(-50%);
 }
 
-.left-top-l > .intro {
+body > header > .clock {
+	left:auto;
+	right:2rem;
+	
 }
 
 .left-top-l > .intro > h3 {

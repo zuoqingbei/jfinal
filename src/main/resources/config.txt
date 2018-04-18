@@ -11,5 +11,14 @@ mysql.url=jdbc:mysql://60.212.191.147:9083/stevenkuang?characterEncoding=UTF-8
 mysql.user=root
 mysql.password=abcd.1234
 
+#Socket域名与地址
+socket.domain=127.0.0.1
+socket.port=8011
+
+#条码读取路径
+scan_image_path=D:/wrjpd/image/
+
+#扫描后条码备份路径 如果需要修改该路径，需要同时修改tomcat底下server.xml里的docBase路径，保持文件映射一致
+tem_path=D:/wrjpd/backups
 
 

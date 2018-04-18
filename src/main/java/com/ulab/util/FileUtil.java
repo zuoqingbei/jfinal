@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.jfinal.kit.PropKit;
 import com.ulab.core.Constants;
 
 public class FileUtil {
@@ -273,7 +274,7 @@ public class FileUtil {
 				if(x==0){
 					if (!f.getName().endsWith("zip") &&! f.getName().endsWith("rar")) {
 						String name=f.getName();
-						fileUrl=moveTotherFolders(filePath, f.getName(), Constants.TEM_PATH);
+						fileUrl=moveTotherFolders(filePath, f.getName(), PropKit.get("tem_path"));
 						map.put("name", name);
 						map.put("path", fileUrl);
 						x++;
@@ -288,7 +289,7 @@ public class FileUtil {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		translateImageFile(Constants.CREATE_FILE_PATH,Constants.CREATE_FILE_PATH, true);
+		translateImageFile(PropKit.get("scan_image_path"),PropKit.get("tem_path"), true);
 	}
 
 }

@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -117,12 +118,14 @@ public class WebSocketServer {
         			if (result.contains("|")) break;
         		}
         		sendAll(result);
-        		client.close();
-        	} catch (IOException e) {
+        		/*Random r=new Random();
+        		sendAll("100|"+r.nextInt()+"|56|88|12|0|0|0|0|0");*/
+        		//client.close();
+        	} catch (Exception e) {
         		e.printStackTrace();
         	}
         }else{
-        	client.close();
+        	//client.close();
         }
         
         

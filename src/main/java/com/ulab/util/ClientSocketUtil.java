@@ -1,14 +1,12 @@
 package com.ulab.util;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
-import com.ulab.core.Constants;
+import com.jfinal.kit.PropKit;
 
 public class ClientSocketUtil {
 
@@ -16,7 +14,8 @@ public class ClientSocketUtil {
 	private boolean isConnected=true;
 	public ClientSocketUtil(){//链接自己，本机上测试的时候用
 		try {
-			server = new Socket(Constants.URL, Constants.PORT);
+			if(server==null)
+			server = new Socket(PropKit.get("socket.domain"),Integer.parseInt(PropKit.get("socket.port")));
 		} catch (Exception e) {
 			isConnected=false;
 		} 

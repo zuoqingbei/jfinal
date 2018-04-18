@@ -14,7 +14,8 @@
 <body>
 <header class="bg100x100">
     <h1 class="blueTitle">日日顺物流-无人机智能盘库系统</h1>
-    <span class="clock"><span class="date"></span> <span class="time"></span></span>
+    <span class="text1169">互联网技术中心研制</span>
+    <!-- <span class="clock"><span class="date"></span> <span class="time"></span></span> -->
 </header>
 <div class="container">
     <div class="left">
@@ -28,10 +29,10 @@
                 </div>
             </div>
             <div class="left-top-r">
-                <div class="uavVideo">
+                 <div class="uavVideo">
                     <h3>实时画面</h3>
-                    <video id="my-player" class="video-js" controls autoplay preload="auto" poster="${contextPath!}/static/img/videoTimg.gif" data-setup='{}'>
-                        <source src='rtmp://172.168.1.102/live/test' type='rtmp/flv'/>
+                    <video id="my-player" class="video-js" controls="controls" autoplay="autoplay" preload="auto" poster="${contextPath!}/static/img/videoTimg.gif" data-setup='{}'>
+                        <source src='http://192.168.0.101:8080/myapp/test.m3u8' type='application/x-mpegURL'/>
                     </video>
                 </div>
                 <div class="uavVideoReplace">
@@ -114,7 +115,7 @@
                     <span class="text">开始<br>盘点</span>
                 </div>
                 <div class="description">
-                    <p>1169互联网技术研发中心研发</p>
+                    <p>互联网技术中心研制</p>
                 </div>
             </div>
 
@@ -130,7 +131,9 @@
 <script src="${contextPath!}/static/js/main.js"></script>
 <script>
 	var imageMap=new Map();
-	var scanInterval; 
+	var scanInterval; //扫描图片定时器
+	var getflystatusInterval;//获取无人机实时状态定时器
+	var flyStatus=-1;//无人机状态 0-飞行中 1-地面 2-起飞中 3-降落中 4-悬停中 5-光流迫降
     $(function () {
         //窗口大小调整
         windowResize();
@@ -138,23 +141,29 @@
             windowResize();
         };
     });
-    //启动
+    //启动无人机
     function startFly(){
-    	imageMap=new Map();
+    	resetInfomation();
     	send("takeoff");
-    	//定时扫描
-    	scanInterval=setInterval(scanImage,1000)
+    	//定时扫描条码
+    	scanInterval=setInterval(scanImage,1000);
+    	//定时请求无人机状态
+    	setTimeout(function(){
+	    	getflystatusInterval=setInterval(getflystatus,200);
+    	},1000);
+    	//播放无人机实时视频
+		//$("#my-player").play();
     }
-    //停止
-    function stopFly(){
-    	clearInterval(scanInterval);
-    	send("land");
+    //获取无人机实时状态
+    function getflystatus(){
+    	send("getflystatus");
     }
+    
     //扫描图片
     function scanImage(){
     	//send("getflystatus");
     	$.post("${contextPath}/test/scanImage",{},function(data){
-    		console.log(data.path)
+    		//console.log(data.path)
     		if(data.path!=null&&data.path!=""){
     			var pre=imageMap.get(data.key);
     			if(pre==null||pre==""||pre=="undefined"){
@@ -167,7 +176,7 @@
     var websocket = null;
     // 判断当前浏览器是否支持WebSocket
     if ('WebSocket' in window) {
-        websocket = new WebSocket("ws://"+location.hostname+":"+location.port+"/jfinal/websocket");
+        websocket = new WebSocket("ws://"+location.hostname+":"+location.port+"${contextPath}/websocket");
     }
     else {
         alert('当前浏览器 Not support websocket')
@@ -185,10 +194,31 @@
 
     //接收到消息的回调方法
     websocket.onmessage = function (event) {
-    	alert("接收消息"+event.data)
+    	var msg=event.data;
+    	//console.log("接收消息"+msg);
+    	if(msg!=null&&msg.indexOf("|")!=-1){
+    		//是获取状态
+    		var result=msg.split("|");
+    		//电量|高度|距离|X方向的速度|Y方向的速度|Z方向的速度|X方向位置|Y方向位置|Z方向位置|飞行状态
+    		//console.log(result)
+    		uavStatus(result[0],result[3],parseFloat(result[1])/100.0);
+    		flyStatus=result[10];//无人机状态 0-飞行中 1-地面 2-起飞中 3-降落中 4-悬停中 5-光流迫降
+    		if(flyStatus=="1"){
+    			//无人机降落了 一旦落地 停止定时器 
+		    	resetInfomation();
+    			uavStop();
+    		}
+    	}
+    	
         setMessageInnerHTML(event.data);
     }
-
+	//重置信息 清除定时器 无人机状态等
+	function resetInfomation(){
+		imageMap=new Map();
+		flyStatus=-1;
+		clearInterval(getflystatusInterval);
+		clearInterval(scanInterval);
+	}
     //连接关闭的回调方法
     websocket.onclose = function () {
         setMessageInnerHTML("WebSocket连接关闭");
