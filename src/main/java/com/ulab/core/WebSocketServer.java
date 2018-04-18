@@ -108,17 +108,22 @@ public class WebSocketServer {
         //接收消息
         ClientSocketUtil client=new ClientSocketUtil();
         client.send(order);
-        String result;
-        try {
-			while (true) {
-				result=readInputStream(new BufferedInputStream(client.server.getInputStream()));
-				System.out.println(result);
-				if (result.contains("|")) break;
-			}
-			sendAll(result);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        if("getflystatus".equals(order)){
+        	String result;
+        	try {
+        		while (true) {
+        			result=readInputStream(new BufferedInputStream(client.server.getInputStream()));
+        			System.out.println(result);
+        			if (result.contains("|")) break;
+        		}
+        		sendAll(result);
+        		client.close();
+        	} catch (IOException e) {
+        		e.printStackTrace();
+        	}
+        }else{
+        	client.close();
+        }
         
         
     }
