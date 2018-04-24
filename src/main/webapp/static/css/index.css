@@ -223,15 +223,15 @@ body > header > .clock {
 @media all {
     .left-bottom > .resultList {
         margin-right: 1.25rem;
-        width: 100%;
+	    width: 100%;
+	    margin-top: 1rem;
     }
 
     .left-bottom > .resultList > h3 {
         position: relative;
-        margin-top: 1.25rem;
-        padding: .5625rem .875rem;
-        font-size: 1.25rem;
-        background-size: auto, 0, auto, 0;
+	    padding: .5625rem .875rem 0;
+	    font-size: 1.25rem;
+	    background-size: auto, 0, auto, 0;
     }
 
     .left-bottom > .resultList > h3 > .number {
@@ -409,7 +409,7 @@ body > header > .clock {
     }
 
     .right-bottom > .control > .deviceList li > .i-battery > .fill {
-        height: 100%;
+        height: 120%;
         width: 70%;
         background: var(--themeBlue);
         transition: width 300ms;
@@ -454,7 +454,7 @@ body > header > .clock {
 
     .right-bottom > .control > .status li {
         margin-top: 3.25rem;
-        margin-bottom: 3.5rem;
+        margin-bottom: 3rem;
     }
 
     .right-bottom > .control > .status li > * {
@@ -503,7 +503,7 @@ body > header > .clock {
 
     .right-bottom > .control > .start {
         position: relative;
-        margin-bottom: 2.25rem;
+        margin-bottom: 2rem;
     }
 
     .right-bottom > .control .start > .btn {
@@ -597,9 +597,13 @@ body > header > .clock {
     }
 
     .control .description {
-        text-align: center;
-        font-size: 1.25rem;
-        margin-bottom: .875rem;
+	    margin-bottom: 2rem;
+	    font-weight: bold;
+	    text-shadow: 0 0.125rem 0 #2e0000;
+	    text-align: center;
+	    font-size: 2rem;
+	    letter-spacing: .125rem;
+	    color: #a36405;
     }
 
 }

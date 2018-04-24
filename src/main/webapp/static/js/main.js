@@ -73,7 +73,7 @@ function uavStart() {
         var confirm = window.confirm("请确认无人机周围环境，是否能安全起飞？");
         if (confirm === true) {
         	startFly();
-            $(".start>.text").html("正在<br>盘点").siblings(".btn").addClass("working");
+            $(".start>.text").html("正在<br>盘库").siblings(".btn").addClass("working");
            /* $(".start>.text").unbind().click(function () {
             	uavStop();
             });*/
@@ -115,7 +115,7 @@ function uavStart() {
 
 //停止
 function uavStop() {
-    $(".start>.text").html("开始<br>盘点").siblings(".btn").removeClass("working");
+    $(".start>.text").html("开始<br>盘库").siblings(".btn").removeClass("working");
    /* $(".start>.text").unbind().click(function () {
     	uavStart();
     });*/
