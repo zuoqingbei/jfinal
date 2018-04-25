@@ -38,7 +38,7 @@
                     </video>
                 </div>
                 <div class="uavVideoReplace">
-                    <video loop src="${contextPath!}/static/video/Wildlife.mp4"></video>
+                    <video controls loop src="${contextPath!}/static/video/rrsVideo264.mp4"></video>
                 </div>
             </div>
         </div>
@@ -77,17 +77,17 @@
                         <li class="active">
                             <div class="i-battery"><div class="fill"></div></div>
                             <div class="i-uav absCenter"></div>
-                            <div class="uavName">GDU-O2</div>
+                            <div class="uavName">GDU-1</div>
                         </li>
                         <li>
                             <div class="i-battery"><div class="fill"></div></div>
                             <div class="i-uav absCenter"></div>
-                            <div class="uavName">GDU-O2</div>
+                            <div class="uavName">GDU-2</div>
                         </li>
                         <li>
                             <div class="i-battery"><div class="fill"></div></div>
                             <div class="i-uav absCenter"></div>
-                            <div class="uavName">GDU-O2</div>
+                            <div class="uavName">GDU-3</div>
                         </li>
                     </ul>
                 </div>
@@ -203,7 +203,7 @@
     		var result=msg.split("|");
     		//电量|高度|距离|X方向的速度|Y方向的速度|Z方向的速度|X方向位置|Y方向位置|Z方向位置|飞行状态
     		//console.log(result)
-    		uavStatus(result[0],result[3],parseFloat(result[1])/1000.0);
+    		uavStatus(result[0],result[3],parseFloat(result[1])/100.0);
     		flyStatus=result[9];//无人机状态 0-飞行中 1-地面 2-起飞中 3-降落中 4-悬停中 5-光流迫降
     		if(flyStatus=="1"){
     			//无人机降落了 一旦落地 停止定时器 

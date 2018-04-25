@@ -19,25 +19,38 @@ var debug = false,
     $deviceList = $('.deviceList'),
     barCodeList = [];
 
-for (var i = 1; i <= 10; i++) {
-    barCodeList.push({
-        imgUrl: "img/barCode.png",
-        x1: 360,
-        y1: 123,
-        x2: 1020,
-        y2: 860,
-        sn: "004365896312552",
-        orderNumber: "P2750436589637682452",
-        position: "C123456",
+var data01 = {
+        // orderNumber: "P2756552896376043824",
+        // position: "C123456",
         description: "冰箱-BCD-251WDCPU1",
-        number: "" + i + i
-    })
-}
-;
-
+        number: 1
+    },
+    data02 = {
+        description: "海尔凌越S4-X",
+        number: 2
+    },
+    data03 = {
+        description: "海尔23.6寸智能魔镜M3S-23IN",
+        number: 4
+    },
+    data04 = {
+        description: "TAB-T750B智能扫地机器人玛奇朵M3",
+        number: 8
+    },
+    datas = [
+        data01, data02, data03, data04, data02, data03, data01, data04, data01, data03, data02, data04, data03, data01
+    ];
+    for(var i=0;i<datas.length;i++){
+        datas[i].orderNumber = "P"+(2756552896376043824+i);
+        datas[i].orderNumber = "C"+(123456+i);
+    }
 
 //入口
 $(function () {
+
+    /*	$(".uavVideoReplace>video").click(function(){
+            $(this)[0].play();
+        })*/
 
     //日期和时间
     clock();
@@ -54,7 +67,7 @@ $(function () {
     //点击开始按钮
     //uavStart();
     $(".start").click(function () {
-    	uavStart();
+        uavStart();
     });
     // 监控自动运行(不成功)
     setTimeout(function () {
@@ -72,11 +85,11 @@ function uavStart() {
     if (startBtnStatus) {
         var confirm = window.confirm("请确认无人机周围环境，是否能安全起飞？");
         if (confirm === true) {
-        	startFly();
+            startFly();
             $(".start>.text").html("正在<br>盘库").siblings(".btn").addClass("working");
-           /* $(".start>.text").unbind().click(function () {
-            	uavStop();
-            });*/
+            /* $(".start>.text").unbind().click(function () {
+                 uavStop();
+             });*/
             startBtnStatus = false;
             $(".deviceList").find("li.active").addClass("uavRotate");
             $uavVideoReplace[0].pause();//视频切换到实时图像
@@ -85,7 +98,7 @@ function uavStart() {
             $deviceList.find("li.active .i-battery").removeClass("warning");
 
             //条码列表中的模拟动画
-           // scanBarcode();
+            // scanBarcode();
 
             //无人机实时状态
             if (debug) {
@@ -116,9 +129,9 @@ function uavStart() {
 //停止
 function uavStop() {
     $(".start>.text").html("开始<br>盘库").siblings(".btn").removeClass("working");
-   /* $(".start>.text").unbind().click(function () {
-    	uavStart();
-    });*/
+    /* $(".start>.text").unbind().click(function () {
+         uavStart();
+     });*/
     startBtnStatus = true;
     $(".deviceList").find("li.active").removeClass("uavRotate");
     $uavVideoReplace.parent().show().siblings().hide();
@@ -145,13 +158,13 @@ function scanning(data) {
         <p>数量：<span class="number">23423</span></p>
         </li>
     */
-    var htmlInner = '<img src="/file/'+data.path+"/"+data.fullName+'" alt="">\n' +
+    var htmlInner = '<img src="/file/' + data.path + "/" + data.fullName + '" alt="">\n' +
         '<p class="coordinates">坐标：<span class="x1">(' + data.leftTopLat + '，</span><span class="y1">' + data.leftTopLon + ') (</span><span class="x2">' + data.width + '，</span><span class="y2">' + data.height + ')</span></p>\n' +
         '<p>SN：&nbsp;&nbsp;<span class="sn">' + data.key + '</span></p>\n' +
-        '<p>单号：<span class="orderNumber"></span></p>\n' +
-        '<p>库位：<span class="position"></span></p>\n' +
-        '<p>描述：<span class="description"></span></p>\n' +
-        '<p>数量：<span class="number"></span></p>';
+        '<p>单号：<span class="orderNumber">' + data.orderNumber||datas[barCodeCounter].orderNumber + '</span></p>\n' +
+        '<p>库位：<span class="position">' + data.position||datas[barCodeCounter].position + '</span></p>\n' +
+        '<p>描述：<span class="description">' + data.description ||datas[barCodeCounter].description+ '</span></p>\n' +
+        '<p>数量：<span class="number">' + data.number||datas[barCodeCounter].number + '</span></p>';
     $resultList.find(".currentR1").html(htmlInner);
 
     $($("li[class*=current]").toArray().reverse()).each(function () {
@@ -162,7 +175,7 @@ function scanning(data) {
     $l3.attr("class", "item bdAndBg currentR3 absCenter");
     $(".resultList ul").append($l3);
 
-    $(".resultList>h3>.number>span").text(++barCodeCounter);
+    $(".resultList>h3>.number>span").text(++barCodeCounter);//计数
     $resultList.find(".currentR1").html("");
 }
 
@@ -204,12 +217,14 @@ function chooseUav() {
 
 //无人机实时状态
 function uavStatus(battery, speed, height) {
-	if(parseFloat(height)<0){
-		height=0;
-	};
-	if(parseFloat(speed)<0){
-		speed=0;
-	};
+    if (parseFloat(height) < 0) {
+        height = 0;
+    }
+    ;
+    if (parseFloat(speed) < 0) {
+        speed = 0;
+    }
+    ;
     if (speed) {
         $speedBox.find(".fill").addClass("value")
     } else {
@@ -224,7 +239,7 @@ function uavStatus(battery, speed, height) {
     }
     $heightBox.find(".number").text(height).end().find(".progressbar>.fill").css("width", height / (uavHeightMax - uavHeightMin) * 100 + "%");
     $deviceList.find("li.active .fill").css("width", function () {
-        return battery ? battery  + "%" : null
+        return battery ? battery + "%" : null
     });
 }
 

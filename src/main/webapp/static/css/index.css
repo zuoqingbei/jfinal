@@ -283,7 +283,7 @@ body > header > .clock {
     }
 
     .left-bottom > .resultList li.item.current {
-        border: .3rem solid var(--themeBlue);
+        border: .25rem solid var(--themeBlue);
         animation: snap 600ms;
     }
 
