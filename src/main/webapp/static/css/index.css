@@ -685,7 +685,9 @@ body > header > .clock {
     }
 }
 
-
+.left-top-r>div{
+	opacity:0
+}
 
 body {
     transform: scaleY(.98) translateY(-1%);
