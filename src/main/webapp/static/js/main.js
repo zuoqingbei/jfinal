@@ -18,6 +18,7 @@ var debug = false,
     $resultList = $('.resultList'),
     $deviceList = $('.deviceList'),
     barCodeList = [];
+	codeInfoMap=new Map();
 
 var data01 = {
         // orderNumber: "P2756552896376043824",
@@ -54,7 +55,9 @@ $(function () {
 
     //日期和时间
     clock();
-
+    
+    initCodeMap();
+    
     //选择无人机
     chooseUav();
 
@@ -83,8 +86,9 @@ function uavStart() {
         return;
     }
     if (startBtnStatus) {
-        var confirm = window.confirm("请确认无人机周围环境，是否能安全起飞？");
-        if (confirm === true) {
+        //var confirm = window.confirm("请确认无人机周围环境，是否能安全起飞？");
+        //if (confirm === true) {
+    	if(true) {
             startFly();
             $(".start>.text").html("正在<br>盘库").siblings(".btn").addClass("working");
             /* $(".start>.text").unbind().click(function () {
@@ -158,13 +162,15 @@ function scanning(data) {
         <p>数量：<span class="number">23423</span></p>
         </li>
     */
+    var codeInfo=codeInfoMap.get(data.key);
+    //console.log(data.key,codeInfo);
     var htmlInner = '<img src="/file/' + data.path + "/" + data.fullName + '" alt="">\n' +
         '<p class="coordinates">坐标：<span class="x1">(' + data.leftTopLat + '，</span><span class="y1">' + data.leftTopLon + ') (</span><span class="x2">' + data.width + '，</span><span class="y2">' + data.height + ')</span></p>\n' +
         '<p>SN：&nbsp;&nbsp;<span class="sn">' + data.key + '</span></p>\n' +
-        '<p>单号：<span class="orderNumber">' + data.orderNumber||datas[barCodeCounter].orderNumber + '</span></p>\n' +
-        '<p>库位：<span class="position">' + data.position||datas[barCodeCounter].position + '</span></p>\n' +
-        '<p>描述：<span class="description">' + data.description ||datas[barCodeCounter].description+ '</span></p>\n' +
-        '<p>数量：<span class="number">' + data.number||datas[barCodeCounter].number + '</span></p>';
+        '<p>单号：<span class="orderNumber">' + formatOutput(codeInfo.orderNumber) + '</span></p>\n' +
+        '<p>库位：<span class="position">' + formatOutput(codeInfo.position) + '</span></p>\n' +
+        '<p>描述：<span class="description">' + formatOutput(codeInfo.description)+ '</span></p>\n' +
+        '<p>数量：<span class="number">' + formatOutput(codeInfo.number) + '</span></p>';
     $resultList.find(".currentR1").html(htmlInner);
 
     $($("li[class*=current]").toArray().reverse()).each(function () {
@@ -307,7 +313,157 @@ function uavVideo() {
         });
     });
 }
-
+//组装条码数据
+function initCodeMap(){
+	codeInfoMap=new Map();
+	var dataArr=[];
+	var data01 = {
+		sn:"9415112616000",
+	    orderNumber:"单号01",
+	    position:"库位01",
+        description: "海尔23.6寸智能魔镜M3S-23IN",
+        number: 4
+    };
+	dataArr.push(data01);
+	var data02 = {
+		sn:"9415112616001",
+	    orderNumber:"单号02",
+	    position:"库位02",
+        description: "海尔23.6寸智能魔镜M3S-23IN",
+        number: 6
+    };
+	dataArr.push(data02);
+	var data03 = {
+		sn:"9415112616003",
+	    orderNumber:"单号03",
+	    position:"库位03",
+        description: "海尔23.6寸智能魔镜M3S-23IN",
+        number: 6
+    };
+	dataArr.push(data03);
+	var data04 = {
+		sn:"9415112616004",
+	    orderNumber:"单号04",
+	    position:"库位04",
+        description: "海尔23.6寸智能魔镜M3S-23IN",
+        number: 4
+    };
+	dataArr.push(data04);
+	
+	var data05 = {
+		sn:"9415112616005",
+	    orderNumber:"单号05",
+	    position:"库位05",
+        description: "海尔23.6寸智能魔镜M3S-23IN",
+        number: 5
+    };
+	dataArr.push(data05);
+	var data06 = {
+		sn:"9415112616006",
+	    orderNumber:"单号06",
+	    position:"库位06",
+        description: "海尔23.6寸智能魔镜M3S-23IN",
+        number: 6
+    };
+	dataArr.push(data06);
+	var data07 = {
+		sn:"9415112616007",
+	    orderNumber:"单号07",
+	    position:"库位07",
+        description: "海尔23.6寸智能魔镜M3S-23IN",
+        number: 7
+    };
+	dataArr.push(data07);
+	var data08 = {
+		sn:"9415112616008",
+	    orderNumber:"单号08",
+	    position:"库位08",
+        description: "海尔23.6寸智能魔镜M3S-23IN",
+        number: 8
+    };
+	dataArr.push(data08);
+	var data09 = {
+		sn:"9415112616009",
+	    orderNumber:"单号09",
+	    position:"库位09",
+        description: "海尔23.6寸智能魔镜M3S-23IN",
+        number: 9
+    };
+	dataArr.push(data09);
+	var data10 = {
+		sn:"9415112616010",
+	    orderNumber:"单号10",
+	    position:"库位10",
+        description: "海尔23.6寸智能魔镜M3S-23IN",
+        number: 10
+    };
+	dataArr.push(data10);
+	for(var x=0;x<dataArr.length;x++){
+		codeInfoMap.put(dataArr[x].sn,dataArr[x]);
+	}
+	
+}
+function formatOutput(str) {
+    if(str==null||str==undefined||str=='null'||str==''){
+        return '';
+    }else
+        return str;
+}
+/** 
+ *  
+ * 描述：js实现的map方法 
+ * @returns {Map} 
+ */  
+function Map(){  
+ var struct = function(key, value) {  
+  this.key = key;  
+  this.value = value;  
+ };  
+// 添加map键值对  
+ var put = function(key, value){  
+   for (var i = 0; i < this.arr.length; i++) {  
+   if ( this.arr[i].key === key ) {  
+    this.arr[i].value = value;  
+    return;  
+   }  
+  };  
+  this.arr[this.arr.length] = new struct(key, value);  
+ };  
+//  根据key获取value   
+ var get = function(key) {  
+  for (var i = 0; i < this.arr.length; i++) {  
+   if ( this.arr[i].key === key ) {  
+    return this.arr[i].value;  
+   }  
+  }  
+ return null;  
+ };  
+//   根据key删除  
+ var remove = function(key) {  
+  var v;  
+  for (var i = 0; i < this.arr.length; i++) {  
+   v = this.arr.pop();  
+   if ( v.key === key ) {  
+    continue;  
+   }  
+   this.arr.unshift(v);  
+  }  
+ };  
+//   获取map键值对个数  
+ var size = function() {  
+  return this.arr.length;  
+ };  
+// 判断map是否为空    
+ var isEmpty = function() {  
+  return this.arr.length <= 0;  
+ };  
+ this.arr = new Array();  
+ this.get = get;  
+ this.put = put;  
+ this.remove = remove;  
+ this.size = size;  
+ this.isEmpty = isEmpty;  
+}  
 
 
 
