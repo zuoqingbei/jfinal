@@ -170,7 +170,7 @@ function scanning(data) {
         '<p>单号：<span class="orderNumber">' + formatOutput(codeInfo.orderNumber) + '</span></p>\n' +
         '<p>库位：<span class="position">' + formatOutput(codeInfo.position) + '</span></p>\n' +
         '<p>描述：<span class="description">' + formatOutput(codeInfo.description)+ '</span></p>\n' +
-        '<p>数量：<span class="number">' + formatOutput(codeInfo.number) + '</span></p>';
+        '<p>层数：<span class="number">' + formatOutput(codeInfo.number) + '</span></p>';
     $resultList.find(".currentR1").html(htmlInner);
 
     $($("li[class*=current]").toArray().reverse()).each(function () {
@@ -317,87 +317,373 @@ function uavVideo() {
 function initCodeMap(){
 	codeInfoMap=new Map();
 	var dataArr=[];
-	var data01 = {
-		sn:"9415112616000",
+	/*dataArr.push({
+		sn:"130180402965",
 	    orderNumber:"单号01",
 	    position:"库位01",
         description: "海尔23.6寸智能魔镜M3S-23IN",
-        number: 4
-    };
-	dataArr.push(data01);
-	var data02 = {
-		sn:"9415112616001",
+        number: 1
+    });
+	dataArr.push({
+		sn:"130180402966",
 	    orderNumber:"单号02",
 	    position:"库位02",
         description: "海尔23.6寸智能魔镜M3S-23IN",
-        number: 6
-    };
-	dataArr.push(data02);
-	var data03 = {
-		sn:"9415112616003",
+        number: 1
+    });
+	dataArr.push({
+		sn:"130180402967",
 	    orderNumber:"单号03",
 	    position:"库位03",
         description: "海尔23.6寸智能魔镜M3S-23IN",
-        number: 6
-    };
-	dataArr.push(data03);
-	var data04 = {
-		sn:"9415112616004",
+        number: 1
+    });
+	dataArr.push({
+		sn:"130180402968",
 	    orderNumber:"单号04",
 	    position:"库位04",
         description: "海尔23.6寸智能魔镜M3S-23IN",
-        number: 4
-    };
-	dataArr.push(data04);
+        number: 1
+    });
 	
-	var data05 = {
-		sn:"9415112616005",
+	dataArr.push({
+		sn:"130180402969",
 	    orderNumber:"单号05",
 	    position:"库位05",
         description: "海尔23.6寸智能魔镜M3S-23IN",
-        number: 5
-    };
-	dataArr.push(data05);
-	var data06 = {
-		sn:"9415112616006",
-	    orderNumber:"单号06",
-	    position:"库位06",
-        description: "海尔23.6寸智能魔镜M3S-23IN",
-        number: 6
-    };
-	dataArr.push(data06);
-	var data07 = {
-		sn:"9415112616007",
+        number: 1
+    });
+	dataArr.push({
+		sn:"130180402970",
 	    orderNumber:"单号07",
 	    position:"库位07",
         description: "海尔23.6寸智能魔镜M3S-23IN",
-        number: 7
-    };
-	dataArr.push(data07);
-	var data08 = {
-		sn:"9415112616008",
+        number: 1
+    });
+	dataArr.push( {
+		sn:"130180402971",
 	    orderNumber:"单号08",
 	    position:"库位08",
         description: "海尔23.6寸智能魔镜M3S-23IN",
-        number: 8
-    };
-	dataArr.push(data08);
-	var data09 = {
-		sn:"9415112616009",
+        number: 1
+    });
+	dataArr.push({
+		sn:"130180402972",
 	    orderNumber:"单号09",
 	    position:"库位09",
         description: "海尔23.6寸智能魔镜M3S-23IN",
-        number: 9
-    };
-	dataArr.push(data09);
-	var data10 = {
-		sn:"9415112616010",
+        number: 1
+    });
+	dataArr.push({
+		sn:"130180402973",
 	    orderNumber:"单号10",
 	    position:"库位10",
         description: "海尔23.6寸智能魔镜M3S-23IN",
-        number: 10
-    };
-	dataArr.push(data10);
+        number: 1
+    });
+	dataArr.push({
+		sn:"130180402974",
+	    orderNumber:"单号10",
+	    position:"库位10",
+        description: "海尔23.6寸智能魔镜M3S-23IN",
+        number: 1
+    });
+	
+	//第二层
+		dataArr.push({
+			sn:"289087689013",
+		    orderNumber:"单号01",
+		    position:"库位01",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 2
+	    });
+		dataArr.push({
+			sn:"289087689014",
+		    orderNumber:"单号02",
+		    position:"库位02",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 2
+	    });
+		dataArr.push({
+			sn:"289087689015",
+		    orderNumber:"单号04",
+		    position:"库位04",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 2
+	    });
+		
+		dataArr.push({
+			sn:"289087689016",
+		    orderNumber:"单号05",
+		    position:"库位05",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 2
+	    });
+		dataArr.push({
+			sn:"289087689017",
+		    orderNumber:"单号06",
+		    position:"库位06",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 2
+	    });
+		dataArr.push({
+			sn:"289087689018",
+		    orderNumber:"单号07",
+		    position:"库位07",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 2
+	    });
+		dataArr.push({
+			sn:"289087689019",
+		    orderNumber:"单号08",
+		    position:"库位08",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 2
+	    });
+		dataArr.push({
+			sn:"289087689020",
+		    orderNumber:"单号09",
+		    position:"库位09",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 2
+	    });
+		dataArr.push({
+			sn:"289087689021",
+		    orderNumber:"单号10",
+		    position:"库位10",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 2
+	    });
+		dataArr.push({
+			sn:"289087689022",
+		    orderNumber:"单号10",
+		    position:"库位10",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 2
+	    });
+		//第三层
+		
+		dataArr.push({
+			sn:"389076590091",
+		    orderNumber:"单号01",
+		    position:"库位01",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 3
+	    });
+		dataArr.push({
+			sn:"389076590092",
+		    orderNumber:"单号02",
+		    position:"库位02",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 3
+	    });
+		dataArr.push({
+			sn:"389076590093",
+		    orderNumber:"单号03",
+		    position:"库位03",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 3
+	    });
+		dataArr.push({
+			sn:"389076590094",
+		    orderNumber:"单号04",
+		    position:"库位04",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 3
+	    });
+		
+		dataArr.push({
+			sn:"389076590095",
+		    orderNumber:"单号05",
+		    position:"库位05",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 3
+	    });
+		dataArr.push({
+			sn:"389076590096",
+		    orderNumber:"单号06",
+		    position:"库位06",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 3
+	    });
+		dataArr.push({
+			sn:"389076590097",
+		    orderNumber:"单号07",
+		    position:"库位07",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 3
+	    });
+		dataArr.push({
+			sn:"389076590098",
+		    orderNumber:"单号08",
+		    position:"库位08",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 3
+	    });
+		dataArr.push({
+			sn:"389076590099",
+		    orderNumber:"单号09",
+		    position:"库位09",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 3
+	    });
+		dataArr.push({
+			sn:"389076590100",
+		    orderNumber:"单号10",
+		    position:"库位10",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 3
+	    });*/
+		
+		//第四层
+		
+		dataArr.push({
+			sn:"489000019001",
+		    orderNumber:"单号01",
+		    position:"库位01",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 4
+	    });
+		dataArr.push({
+			sn:"489000019002",
+		    orderNumber:"单号02",
+		    position:"库位02",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 4
+	    });
+		dataArr.push({
+			sn:"489000019003",
+		    orderNumber:"单号03",
+		    position:"库位03",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 4
+	    });
+		dataArr.push({
+			sn:"489000019004",
+		    orderNumber:"单号04",
+		    position:"库位04",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 4
+	    });
+		
+		dataArr.push({
+			sn:"489000019005",
+		    orderNumber:"单号05",
+		    position:"库位05",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 4
+	    });
+		dataArr.push({
+			sn:"489000019006",
+		    orderNumber:"单号06",
+		    position:"库位06",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 4
+	    });
+		dataArr.push({
+			sn:"489000019007",
+		    orderNumber:"单号07",
+		    position:"库位07",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 4
+	    });
+		dataArr.push({
+			sn:"489000019008",
+		    orderNumber:"单号08",
+		    position:"库位08",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 4
+	    });
+		dataArr.push({
+			sn:"489000019009",
+		    orderNumber:"单号09",
+		    position:"库位09",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 4
+	    });
+		dataArr.push({
+			sn:"489000019010",
+		    orderNumber:"单号10",
+		    position:"库位10",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 4
+	    });
+		
+
+		//第五层
+	/*	
+		dataArr.push({
+			sn:"567901232409",
+		    orderNumber:"单号01",
+		    position:"库位01",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 5
+	    });
+		dataArr.push({
+			sn:"567901232410",
+		    orderNumber:"单号02",
+		    position:"库位02",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 5
+	    });
+		dataArr.push({
+			sn:"567901232411",
+		    orderNumber:"单号03",
+		    position:"库位03",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 5
+	    });
+		dataArr.push({
+			sn:"567901232412",
+		    orderNumber:"单号04",
+		    position:"库位04",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 5
+	    });
+		
+		dataArr.push({
+			sn:"567901232413",
+		    orderNumber:"单号05",
+		    position:"库位05",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 5
+	    });
+		dataArr.push({
+			sn:"567901232414",
+		    orderNumber:"单号06",
+		    position:"库位06",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 5
+	    });
+		dataArr.push({
+			sn:"567901232415",
+		    orderNumber:"单号07",
+		    position:"库位07",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 5
+	    });
+		dataArr.push({
+			sn:"567901232416",
+		    orderNumber:"单号08",
+		    position:"库位08",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 5
+	    });
+		dataArr.push({
+			sn:"567901232417",
+		    orderNumber:"单号09",
+		    position:"库位09",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 5
+	    });
+		dataArr.push({
+			sn:"567901232418",
+		    orderNumber:"单号10",
+		    position:"库位10",
+	        description: "海尔23.6寸智能魔镜M3S-23IN",
+	        number: 5
+	    });*/
+	
 	for(var x=0;x<dataArr.length;x++){
 		codeInfoMap.put(dataArr[x].sn,dataArr[x]);
 	}
