@@ -75,37 +75,6 @@ public class WebSocketServer {
 	@OnMessage
     public void onMessage(String order){
         System.out.println(this+"；来自网页的指令:" + order);
-      /*  if(info.contains("userid")){
-            this.userid = info.split("userid=")[1];
-            System.out.println(this+",this.session="+this.session+";this.userid="+this.userid);
-            webSocketSet.put(userid, this);
-        }*/
-       // String result=SocketClient.sendOrder(order);
-      /*  ClientSocketUtil client=new ClientSocketUtil();
-        client.send(order);
-        DataInputStream dis=null;
-        InputStream is=null;
-       try {
-    	   is = client.server.getInputStream();
-           dis=new DataInputStream(is);
-           while(true){
-           	System.out.println(dis.readUTF());
-           }
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}*/
-      /*  BufferedReader br=client.recieve();
-		String s = "";        
-        try {
-			while((s = br.readLine()) != null)
-			    System.out.println(s);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        client.close();*/
-       // sendAll(result);
         //接收消息
         ClientSocketUtil client=new ClientSocketUtil();
         client.send(order);

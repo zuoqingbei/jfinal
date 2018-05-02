@@ -9,7 +9,7 @@ var debug = false,
     $heightBox = $("#heightBox"),
     uavSpeed = 0.2,
     uavSpeedMin = 0,
-    uavSpeedMax = 1,
+    uavSpeedMax = 5,
     uavHeight = 2.5,
     uavHeightMin = 0,
     uavHeightMax = 3.5,
@@ -65,7 +65,7 @@ $(function () {
     // allVideoSwitch();
 
     //页面加载完后开始播放视频
-    $(".uavVideoReplace>video")[0].play();
+    //$(".uavVideoReplace>video")[0].play();
 
     //点击开始按钮
     //uavStart();
@@ -89,6 +89,7 @@ function uavStart() {
         //var confirm = window.confirm("请确认无人机周围环境，是否能安全起飞？");
         //if (confirm === true) {
     	if(true) {
+    		resetInfomation();
             startFly();
             $(".start>.text").html("正在<br>盘库").siblings(".btn").addClass("working");
             /* $(".start>.text").unbind().click(function () {
@@ -96,7 +97,7 @@ function uavStart() {
              });*/
             startBtnStatus = false;
             $(".deviceList").find("li.active").addClass("uavRotate");
-            $uavVideoReplace[0].pause();//视频切换到实时图像
+             // $uavVideoReplace[0].pause();//视频切换到实时图像
             $uavVideoReplace.parent().hide().siblings().show();
             $resultList.find("ul>li").html("");
             $deviceList.find("li.active .i-battery").removeClass("warning");
@@ -139,7 +140,7 @@ function uavStop() {
     startBtnStatus = true;
     $(".deviceList").find("li.active").removeClass("uavRotate");
     $uavVideoReplace.parent().show().siblings().hide();
-    $uavVideoReplace[0].play();
+    //$uavVideoReplace[0].play();
     barCodeCounter = 0;
     clearInterval(uavStatusCounter);
     uavStatus(null, 0, 0);
@@ -163,6 +164,15 @@ function scanning(data) {
         </li>
     */
     var codeInfo=codeInfoMap.get(data.key);
+    if(!codeInfo){
+    	codeInfo={
+    		sn:data.key,
+    	    orderNumber:"",
+    	    position:"",
+            description: "",
+            number: ""
+        };
+    }
     //console.log(data.key,codeInfo);
     var htmlInner = '<img src="/file/' + data.path + "/" + data.fullName + '" alt="">\n' +
         '<p class="coordinates">坐标：<span class="x1">(' + data.leftTopLat + '，</span><span class="y1">' + data.leftTopLon + ') (</span><span class="x2">' + data.width + '，</span><span class="y2">' + data.height + ')</span></p>\n' +

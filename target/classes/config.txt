@@ -16,9 +16,9 @@ socket.domain=192.168.6.100
 socket.port=8011
 
 #条码读取路径
-scan_image_path=D:/wrjpd/image/
+scan_image_path=C:/wrjpd/image/
 
 #扫描后条码备份路径 如果需要修改该路径，需要同时修改tomcat底下server.xml里的docBase路径，保持文件映射一致
-tem_path=D:/wrjpd/backups
+tem_path=C:/wrjpd/backups
 
 

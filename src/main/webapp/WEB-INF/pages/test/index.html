@@ -34,11 +34,11 @@
                  <div class="uavVideo">
                     <h3>实时画面</h3>
                     <video id="my-player" class="video-js" controls="controls" autoplay="autoplay" preload="auto" poster="${contextPath!}/static/img/videoTimg.gif" data-setup='{}'>
-                        <source src='http://192.168.0.101:8080/myapp/test.m3u8' type='application/x-mpegURL'/>
+                        <!-- <source src='http://192.168.0.101:8080/myapp/test.m3u8' type='application/x-mpegURL'/> -->
                     </video>
                 </div>
                 <div class="uavVideoReplace">
-                    <video controls loop src="${contextPath!}/static/video/rrsVideo264.mp4"></video>
+                    <!-- <video controls loop src="${contextPath!}/static/video/rrsVideo264.mp4"></video> -->
                 </div>
             </div>
         </div>
@@ -203,7 +203,7 @@
     		var result=msg.split("|");
     		//电量|高度|距离|X方向的速度|Y方向的速度|Z方向的速度|X方向位置|Y方向位置|Z方向位置|飞行状态
     		//console.log(result)
-    		uavStatus(result[0],result[3],parseFloat(result[1])/100.0);
+    		uavStatus(result[0],parseFloat(result[4])/10.0,parseFloat(result[1])/100.0);
     		flyStatus=result[9];//无人机状态 0-飞行中 1-地面 2-起飞中 3-降落中 4-悬停中 5-光流迫降
     		if(flyStatus=="1"){
     			//无人机降落了 一旦落地 停止定时器 
@@ -234,7 +234,7 @@
     //将消息显示在网页上
     function setMessageInnerHTML(innerHTML) {
        // document.getElementById('message').innerHTML += innerHTML + '<br/>';
-       console.log(innerHTML);
+      // console.log(innerHTML);
     }
 
     //关闭WebSocket连接
@@ -244,7 +244,7 @@
 
     //发送消息
     function send(order) {
-        console.log("发送消息："+order);
+        //console.log("发送消息："+order);
         websocket.send(order);
     }
     function Map(){
